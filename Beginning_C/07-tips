@@ -1,0 +1,137 @@
+I talked about how your computer allocates an
+area of memory when you declare a variable. You refer to this area in memory 
+using the variable name in your program, but once your program is compiled and 
+running, your computer references
+it by the address of the memory location. This is the number that the computer 
+uses to refer to the “box” in which the value of the variable is stored.
+
+Variables that can store addresses are called pointers, and the address that’s stored in a pointer
+is usually that of another variable.
+
+You, and more importantly, the compiler, must know the type of data stored in the variable to which it points. Without this information it’s virtually impossible to know how to handle the
+contents of the memory to which it points. A pointer to a value of type char is pointing to a value
+occupying 1 byte, whereas a pointer to a value of type long is usually pointing
+to the first byte of a value occupying 4 bytes.
+
+The type name void means absence of any type, so a pointer of type void * can 
+contain the address of a data item of any type. Type void * is often used as an argument type or return value type
+with functions that deal with data in a type-independent way. 
+Any kind of pointer can be passed
+around as a value of type void * and then cast to the appropriate type when you 
+come to use it.
+
+When
+you want to access the integer value at the address stored in the void * pointer, you must first cast
+the pointer to type int *. You’ll meet the malloc() library function later in 
+this chapter that returns a pointer of type void *.
+
+You can declare a pointer to a variable of type int with the following 
+statement:
+
+int *pointer;
+
+This statement just creates the pointer but doesn’t initialize it.
+
+You can initialize
+pointer so that it doesn’t point to anything by rewriting the declaration like 
+this:
+
+int *pointer = NULL;
+
+NULL is a constant that’s defined in the standard library and is the equivalent
+of zero for a pointer.
+NULL is a value that’s guaranteed not to point to any location in memory.
+
+NULL is defined in the header files <stddef.h>, <stdlib.h>, <stdio.h>, 
+<string.h>, <time.h>, <wchar.h>, and <locale.h>, and you must have at least one
+ of these headers included in your source
+file for NULL to be recognized by the compiler.
+
+If you want to initialize your variable pointer with the address of a variable 
+that you’ve already declared, you use the address of operator &:
+
+int number = 10;
+int *pointer = &number;
+
+Note that the declaration
+of number must precede the declaration of the pointer. 
+The compiler needs to have already allocated space and thus an address for 
+number to use it to initialize the pointer variable.
+
+You can declare regular variables and pointers in the same statement:
+
+double value, *pVal, fnum;
+
+This statement declares two double precision floating-point variables, value and fnum, and a
+variable, pVal of type “pointer to double.” With this statement it is obvious that only the second variable,
+pVal, is a pointer, but consider this statement:
+
+int *p, q;
+
+This declares a pointer, p, and a variable, q, that is of type int. It is a 
+common mistake to think that both p and q are pointers.
+
+Accessing a Value:
+
+You use the indirection operator, *, to access the value of the variable pointed
+ to by a pointer. This operator is also referred to as the dereference operator 
+because you use it to “dereference” a pointer.
+
+int number = 15;
+int *pointer = &number;
+int result = 0;
+
+The pointer variable contains the address of the variable number, so you can use
+ this in an expression to calculate a new value for total, like this:
+
+result = *pointer + 5;
+
+number = 10;
+printf("\nnumber's address: %p", &number);	/* Output the address */
+
+To output the address of the variable called number, you use the output format 
+specifier %p. This outputs the value as a memory address in hexadecimal form.
+
+Remember, a pointer itself has an address, just like any other variable.
+
+Because you can access the contents of number through the pointer pointer, you 
+can use a dereferenced pointer in arithmetic statements:
+
+*pointer += 25;
+
+you can change the variable that pointer points to by a statement such as this:
+
+pointer = &another_number;
+
+a pointer can
+contain the address of any variable of the same type, so you can use one 
+pointer variable to change the values of many other variables, as long as 
+they’re of the same type as the pointer.
+
+Caution: You should always initialize your pointers when you declare them. 
+Using a pointer that isn’t initialized to store an item of data is dangerous. 
+Who knows what you might overwrite when you use the
+pointer to store a value?
+
+++*pnum;
+
+You can see that the expression ++*pnum increments the value pointed to by pnum
+without any problem
+However, if you want to use the postfix form, you have to write (*pnum)++.
+
+
+The parentheses are essential —
+assuming that you want to increment the value rather than the address
+
+This is because the operators ++ and unary * (and unary &, for that matter) 
+share the same precedence level and are evaluated right to left.
+
+The compiler would apply the ++ to pnum first, incrementing the
+address, and only then dereference it to get the value.
+
+
+
+
+
+
+
