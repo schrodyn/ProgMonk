@@ -565,7 +565,58 @@ if( (index ==sizeof(buffer) &&( (*(pbuffer+index-1) != '\0) )
     return 1;
   }
 
+You could create an array of pointers to store the locations of the
+three strings:
 
+char *pS[3] = { NULL };
+
+You learned in Chapter 5 that if you supply fewer
+initial values than elements in an array initializer list, the remaining elements
+ will be initialized with 0. Thus just putting a list with one value, NULL, will 
+initialize all the elements of an array of pointers
+of any size to NULL.
+
+The variable must be defined as const to allow you to use it as an array dimension; array dimensions can only be specified by constant expressions.
+
+const size_t BUFFER_LEN = 512;		/* Size of input buffer	*/
+char buffer[BUFFER_LEN];		/* Store for strings	*/
+
+You can also initialize a pointer with the address of a constant string:
+
+char *pString = "To be or not to be";
+
+This statement allocates sufficient memory for the string, places the constant 
+string in the memory allocated and, after allocating space for it, sets the value
+of the pointer pS as the address of the first byte of the string.
+
+The
+problem with this is that there is nothing to prevent you from modifying 
+the string with a statement such as the following:
+
+*(pString+3) = 'm';
+
+The const keyword doesn’t help in this case. If you declare pString as const, 
+it’s the pointer that is constant, not what it points to.
+
+let's assume we've read string in buffer, then next:
+
+pS[i] = (char*)malloc(pbuffer-buffer); /* Get memory for string	*/
+
+if(pS[i] == NULL)	/* Check we actually got some...*/
+{
+ printf("\nOut of memory – ending program.");
+ return 1;			/* ...Exit if we didn't	*/
+}
+
+/* Copy string from buffer to new memory */
+strcpy(pS[i], buffer);
+
+cool method to read in buffer:
+
+pbuffer = buffer ;
+/* Read a string of up to BUFFER_LEN characters */
+while((pbuffer - buffer < BUFFER_LEN-1) &&
+((*pbuffer++ = getchar()) != '\n'));
 
 
 
