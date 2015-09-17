@@ -1,0 +1,82 @@
+A buffer is simply a contiguous 
+block of computer memory that holds multiple instances of the same data 
+type.
+C programmers normally associate with the word buffer arrays. Most 
+commonly, character arrays.
+
+Static variables are allocated at load 
+time on the data segment.  Dynamic variables are allocated at run time on 
+the stack.
+
+We will concern ourselves only with the overflow of dynamic buffers, otherwise
+known as stack-based buffer overflows.
+
+To understand what stack buffers are we must first understand how a
+process is organized in memory.  Processes are divided into three regions:
+Text, Data, and Stack.
+
+The text region is fixed by the program and includes code (instructions)
+and read-only data.  This region corresponds to the text section of the
+executable file.  This region is normally marked read-only and any attempt to
+write to it will result in a segmentation violation.
+
+The data region contains initialized and uninitialized data.  Static
+variables are stored in this region.  The data region corresponds to the
+data-bss sections of the executable file.  Its size can be changed with the
+brk(2) system call.
+
+
+                             /------------------\  lower
+                             |                  |  memory
+                             |       Text       |  addresses
+                             |                  |
+                             |------------------|
+                             |   (Initialized)  |
+                             |        Data      |
+                             |  (Uninitialized) |
+                             |------------------|
+                             |                  |
+                             |       Stack      |  higher
+                             |                  |  memory
+                             \------------------/  addresses
+
+
+A stack is a contiguous block of memory containing data.  A register called
+the stack pointer (SP) points to the top of the stack.  The bottom of the 
+stack is at a fixed address.  Its size is dynamically adjusted by the kernel 
+at run time. The CPU implements instructions to PUSH onto and POP off of the 
+stack. 
+
+The stack consists of logical stack frames that are pushed when calling a
+function and popped when returning.  A stack frame contains the parameters to 
+a function, its local variables, and the data necessary to recover the 
+previous stack frame, including the value of the instruction pointer at the 
+time of the function call.
+
+Depending on the implementation the stack will either grow down (towards
+lower memory addresses), or up.  In our examples we'll use a stack that grows
+down.  This is the way the stack grows on many computers including the Intel, 
+Motorola, SPARC and MIPS processors.  The stack pointer (SP) is also
+implementation dependent.  It may point to the last address on the stack, or 
+to the next free available address after the stack.  For our discussion we'll
+assume it points to the last address on the stack.
+
+In addition to the stack pointer, which points to the top of the stack
+(lowest numerical address), it is often convenient to have a frame pointer
+(FP) which points to a fixed location within a frame.  Some texts also refer
+to it as a local base pointer (LB).  In principle, local variables could be
+referenced by giving their offsets from SP.  However, as words are pushed onto
+the stack and popped from the stack, these offsets change.
+
+Futhermore, on some machines, such
+as Intel-based processors, accessing a variable at a known distance from SP
+requires multiple instructions.
+
+Consequently, many compilers use a second register, FP, for referencing
+both local variables and parameters because their distances from FP do
+not change with PUSHes and POPs.  On Intel CPUs, BP (EBP) is used for this 
+purpose. 
+Because the way our stack grows, actual parameters have 
+positive offsets and local variables have negative offsets from FP.
+
+
