@@ -599,6 +599,8 @@ The const keyword doesn’t help in this case. If you declare pString as const,
 it’s the pointer that is constant, not what it points to.
 
 let's assume we've read string in buffer, then next:
+Once a string has been entered, you use the malloc() function to request 
+sufficient memory to hold the string exactly:
 
 pS[i] = (char*)malloc(pbuffer-buffer); /* Get memory for string	*/
 
@@ -611,6 +613,15 @@ if(pS[i] == NULL)	/* Check we actually got some...*/
 /* Copy string from buffer to new memory */
 strcpy(pS[i], buffer);
 
+This uses the library function, strcpy(), to copy the contents of buffer to the
+ memory pointed to by pS[i].
+
+Take care not to confuse the arguments when using the strcpy() function; 
+the second argument is the source and
+the first argument is the destination for the copy operation. 
+Getting them mixed up is usually disastrous, because
+copying continues until a '\0' is found.
+
 cool method to read in buffer:
 
 pbuffer = buffer ;
@@ -618,9 +629,81 @@ pbuffer = buffer ;
 while((pbuffer - buffer < BUFFER_LEN-1) &&
 ((*pbuffer++ = getchar()) != '\n'));
 
+The function free() is complementary to malloc(), and
+it releases memory previously allocated by malloc(). It only requires 
+the pointer to the memory allocated as an argument. 
+Although memory will be freed at the end of the program automatically, it’s good practice to free memory
+as soon as you no longer need it.
+
+another method to read strings:
+
+printf("\nEnter successive lines, pressing Enter at the"
+" end of each line.\nJust press Enter to end.\n\n");
+while((*fgets(buffer, BUFFER_LEN, stdin) != '\n') && (i < NUM_P))
+{
+	pS[i] = (char*)malloc(strlen(buffer) + 1);
+	if(pS[i]==NULL)
+	/* Check for no memory allocated
+	{
+		printf(" Memory allocation failed. Program terminated.\n");
+		return 1;
+	}
+	strcpy(pS[i++], buffer);
+}
+
+As soon as you collect each input line in buffer, you allocate the correct 
+amount of memory to accommodate the line by using the malloc() function. 
+You get the count of the number of bytes that you need by using the
+strlen() function and adding 1 for the '\0' at the end.
+
+cool bubble sorting:
+
+while(!sorted)
+{
+	sorted = true;
+	for(i = 0 ; i<last_string-1 ; i++)
+		if(strcmp(pS[i], pS[i + 1]) > 0)
+		{
+		  sorted = false;	/* We were out of order */
+		  pTemp= pS[i];		/* swap */
+		  pS[i] = pS[i + 1];
+		  pS[i + 1] = pTemp;
+		}
+}
+
+free pointer:
+ free(pS[i]);
+ pS[i] = NULL;
+
+don't forget to assign pointer to NULL after freeing memory
+
+improved calculator:
+
+#define BUFFER_LEN 256
+
+char input[BUFFER_LEN];
+while(strcmp(fgets(input, BUFFER_LEN, stdin), "quit\n") != 0)
+{
+	/* Code to implement the calculator */
+}
 
 
+input ends when user type "quit"
 
+You set the input string to a length of 256. This should be enough because most
+ computers keyboard buffers are 255 characters.
+
+The fgets() function stores a newline character when you press the Enter to end 
+entry of as line.
+
+input_length = strlen(input);	/* Get the input string length */
+input[--input_length] = '\0';	/* Remove newline at the end */
+
+to remove spaces:
+
+for(to = 0, index = 0 ; index<=input_length ; index++)
+	if(input[index] != ' ')		/* If it is not a space */
+	  input[to++] = input[index]; 	/* Copy the character */
 
 
 
