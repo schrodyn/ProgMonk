@@ -679,6 +679,9 @@ don't forget to assign pointer to NULL after freeing memory
 
 improved calculator:
 
+the scanf() function doesn’t allow you to read a complete string
+that contains spaces, as it stops at the first whitespace character.
+
 #define BUFFER_LEN 256
 
 char input[BUFFER_LEN];
@@ -696,6 +699,8 @@ You set the input string to a length of 256. This should be enough because most
 The fgets() function stores a newline character when you press the Enter to end 
 entry of as line.
 
+size_t input_length = 0;
+
 input_length = strlen(input);	/* Get the input string length */
 input[--input_length] = '\0';	/* Remove newline at the end */
 
@@ -705,6 +710,16 @@ for(to = 0, index = 0 ; index<=input_length ; index++)
 	if(input[index] != ' ')		/* If it is not a space */
 	  input[to++] = input[index]; 	/* Copy the character */
 
+The variable input_length
+has been declared as type size_t to be compatible with the type returned by the 
+strlen() function.
 
+to copy only digits:
+
+you have a for loop that copies however many digits there
+are to number_string:
+
+for( ; isdigit(*(input+index)) ; index++)
+	*(number_string+number_length++) = *(input+index);
 
 
