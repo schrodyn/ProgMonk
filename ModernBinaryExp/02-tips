@@ -1,0 +1,37 @@
+hex editors/viewers:
+xxd, -i option is C style
+dhex -- hex editor
+
+ascii Readable Hex:
+strings -- Displays ACII strings > 4 characters long
+File Formats on Disk:
+Linux:
+ readelf
+Windows:
+ Peview.exe
+For unknows files:
+ file
+
+Hashing
+Do we have the same file?
+md5sum --> uplad hash to virustotal.com or Google search hash
+
+Command Line Disassembly
+objdump -d
+with intel syntax:
+objdump -M intel -d
+
+Convert hex to decimal
+echo $((0xDEADBEEF))
+
+IDA Basics 
+Change between basic and graphic mode (space bar) 
+Rename variables: (n)
+
+The book on IDA 
+The IDA PRO book
+
+Corkami.com -- diagrams of file structures and other interesting trivia
+http://www.bottomupcs.com - Systems background
+
+
