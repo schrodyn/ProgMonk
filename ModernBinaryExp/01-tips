@@ -1,0 +1,108 @@
+pwning commonly refers to
+vulnerability research and exploit development
+
+C Designed in 1969-1972 for writing UNIX operating system
+
+An assembly instruction set
+introduced in 1978 by Intel
+1978 - 16bit
+1985 - 32bit
+2001 - 64bit (Itanium)
+2003 - 64bit (AMD64)
+
+Intel syntax: operand destination, source
+• mov eax, 5
+
+AT&T syntax: operand source, destination
+• mov $5, eax
+
+Important Registers:
+
+EAX EBX ECX EDX - General purpose registers
+• ESP - Stack pointer, “top” of the current stack frame (lower
+memory)
+• EBP - Base pointer, “bottom” of the current stack frame
+(higher memory)
+• EIP - Instruction pointer, pointer to the next instruction to
+be executed by the CPU
+
+• EFLAGS - stores flag bits
+• ZF - zero flag, set when result of an operation equals zero
+• CF - carry flag, set when the result of an operation is too large/small
+• SF - sign flag, set when the result of an operation is negative
+
+Moving Data:
+
+• mov ebx, eax
+  • Move the value in eax to ebx
+• mov eax, 0xDEADBEEF
+  • Move 0xDEADBEEF into eax
+• mov edx, DWORD PTR [0x41424344]
+  • Move the 4-byte value at address 0x41424344 into edx
+• mov ecx, DWORD PTR [edx]
+  • Move the 4-byte value at the address in edx, into ecx
+• mov eax, DWORD PTR [ecx+esi*8]
+  • Move the value at the address ecx+esi*8 into eax
+
+Arithmetic Operations:
+
+• sub edx, 0x11
+  • edx = edx - 0x11;	// subtracts 0x11 from edx
+• add eax, ebx
+  • eax = eax + ebx;	// add eax and ebx, storing value in eax
+• inc edx
+  • edx++;		// increments edx
+• dec ebx
+  • ebx--;		// decrements ebx
+• xor eax, eax
+  • eax = eax ^ eax;	// bitwise xor eax with itself (zeros eax)
+• or edx, 0x1337
+  • edx = edx | 0x1337;	// bitwise or edx with 0x1337
+
+Some Conditional Jumps:
+
+• jz $LOC
+  • Jump to $LOC if ZF = 1
+• jnz $LOC
+  • Jump to $LOC if ZF = 0
+• jg $LOC
+  • Jump to $LOC if the result of a comparison is the destination is greater 
+than the source
+
+Stack Manipulation:
+
+• push ebx
+  • Subtract 4 from the stack pointer to move it towards lower memory
+(zero,) and copy the value in EBX on top of the stack
+  sub esp, 4
+  mov DWORD PTR [esp], ebx
+
+• pop ebx
+  • Copy the value off the top of the stack and into EBX, the add 4 to the
+stack pointer to move it towards higher memory (0xFFFFFFFF)
+  mov ebx, DWORD PTR [esp]
+  add esp, 4
+
+Calling / Returning:
+
+• call some_function
+  • Calls the code at some_function. We need to push the return
+address onto the stack, then branch to some_function
+  push eip
+  mov eip, some_function ; not actually valid
+
+• ret
+  • Used to return from a function call. Pops the top of the stack to eip
+  pop eip ; not actually valid
+
+• nop
+  • ‘no operation’ - does nothing
+
+• Related Readings:
+	• Hacking: The Art of Exploitation
+	• Chapter 0x200: Programming - C programming and GDB
+
+	• Practical Reverse Engineering (Dang et al)
+	• Chapter 1 (x86)
+
+
