@@ -240,7 +240,147 @@ return (x + y)/2.0f;
 Now the compiler can compile the call to average() in main() because it knows all
  its characteristics, its name, its parameter types, and its return type.
 
+You can qualify a function parameter using the const keyword, which indicates that the function will treat the argument that is passed for this parameter as a 
+constant. Because arguments are passed by value, this is only useful when the 
+parameter is a pointer.
 
+Typically you apply the const keyword to a parameter that is a pointer to specify
+that a function will not change the value pointed to.
+
+Here’s an example of a function with a const parameter:
+
+bool SendMessage(const char* pmessage)
+{
+	/* Code to send the message */
+	return true;
+}
+
+The compiler will verify that the code in the body of the function does not use 
+the pmessage pointer to modify the message text.
+
+You could specify the pointer itself as const too, but this makes
+little sense because the address is passed by value so you cannot change the 
+original pointer in the calling function.
+
+const int *pvalue = &value1;  /* pointer to constant */
+int const *cpvalue = &value1; /* Constant pointer */
+
+pvalue = &value2;	/* OK: pointer is not constant */
+*pvalue = 77;		/* Illegal: data is constant */
+
+cpvalue = &value2;	/* Illegal: pointer is constant */
+*cpvalue = 77;		/* OK: data is not constant */
+
+
+sorting strings:
+
+void str_sort(const char *p[], int n)
+{
+	char *pTemp = NULL;	/* Temporary pointer
+	bool sorted = false;	/* Strings sorted indicator
+	while(!sorted)		/* Loop until there are no swaps
+	{
+		sorted = true;		/* Initialize to indicate no swaps
+		for(int i = 0 ; i<n-1 ; i++ )
+		if(strcmp(p[i], p[i + 1]) > 0)
+		{
+			sorted = false;	/* indicate we are out of order
+			swap(&p[i], &p[i+1]);	/* Swap the pointers
+		}
+	}
+}
+
+You aren’t obliged to put the parameter names in a function prototype, but it’s 
+usually better if you do. I omitted them in this example to demonstrate that you 
+can leave them out but I recommend that you include them in your programs.
+
+bool str_in(const char **);
+void str_sort(const char *[], int);
+void swap( void **p1, void **p2);
+void str_out(char *[], int);
+
+Of course, type const char** is the same as type const char*[], which is an array
+of elements of type
+const char*. You could use either type specification here.
+
+exit(1) -- function that terminates program with code 1.
+
+Note that there is no return statement in the definition of the str_sort() 
+function. Coming to the end of the function body during execution is equivalent of
+executing a return statement without a return expression.
+
+The swap() function called by sort() is a short utility function that swaps two 
+pointers:
+
+void swap( void **p1, void **p2)
+{
+ void *pt = *p1;
+ *p1 = *p2;
+ *p2 = pt;
+}
+
+As you know, pointers are passed by value, just like any other type of argument so
+ to be able to change a pointer, you must pass a pointer to a pointer as the 
+function argument. 
+The parameters here are of type void**, which is “pointer to void*”. Any pointer 
+of the form type* will convert to type void* so this function can swap two
+pointers of any given type.
+
+You can also return a pointer from a function.
+
+Cast-Iron Rule
+Never return the address of a local variable in a function.
+
+If you want the new pay value to be stored in another location, the IncomePlus() 
+function could conceivably allocate space for it using malloc() and then return 
+the address of this memory. However, you should be cautious about doing this 
+because responsibility for freeing the memory would then be left to the calling 
+function.
+
+It would be
+better to pass two arguments to the function, one being the address of the initial
+ pay and the other being the address of the location in which the new pay is to be
+ stored. That way, the calling function has control of the memory.
+
+Separating the allocation of memory at runtime from the freeing of the memory is 
+sometimes a recipe for something called a memory leak.
+
+As far as possible, you should make the function that allocates memory 
+responsible for releasing it.
+
+Note, however, when you need to allocate memory that has to be released somewhere
+else in the program it’s best to code the function that will release the memory in
+ tandem with coding the function that allocates it. That way,
+there’s less risk of a memory leak.
+
+So tips:
+1) Before you use a function in your source file, you’d either define the function
+or declare the function with a function prototype.
+
+2) Specifying a pointer parameter as const indicates to the compiler that the 
+function does not modify the data pointed to by the function. 
+
+3) Arguments to a function should be of a type that’s compatible with the 
+corresponding parameters specified in its header. If you pass a value of type 
+double to a function that expects an integer argument, the value will be truncated
+, removing the fractional part.
+
+4) Copies of the argument values are transferred to a function, not the original 
+values in the calling function. This is referred to as the pass-by-value mechanism
+ for transferring data to a function.
+
+5) If you want a function to modify a variable that’s declared in its calling 
+function, the address of the variable needs to be transferred as an argument.
+
+void strrev(char *p) -- reverse string
+{
+  char *q = p;
+  while(q && *q) ++q; -- find eos
+  for(--q; p < q; ++p, --q)
+    *p = *p ^ *q,
+    *q = *p ^ *q,
+    *p = *p ^ *q;
+}
 
 
 
