@@ -1,0 +1,30 @@
+-- comment
+
+{--
+	multilyne comment
+--}
+
+how to define your function?
+
+sqr x = x*x
+
+fact 1 = 1
+fact n = fact (n-1) * n
+
+condition operator:
+
+abs x = if x > 0
+	then x
+	else -x
+
+you can define your own operators:
+
+i @@ j = i*i + j*j
+
+example call:
+5 @@ 7
+
+you can use arbitrary sequence of symbols except some reserved:
+for example, -> and ::
+
+
