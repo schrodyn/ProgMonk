@@ -461,6 +461,118 @@ Calling the abort() function terminates the program immediately and represents a
  abnormal end to program operations, so you shouldn’t use this for a normal end 
 to a program.
 
+For example:
+abort();	/* Abnormal program termination */
+This statement can appear anywhere in your program.
+
+Calling the exit() function results in a normal end to a program. 
+The function requires an integer argument that will be returned to the operating 
+system.
+A value of 0 usually represents a completely normal program end.
+
+As you have seen, you can also end a program by executing a return statement with an integer value in main(), for example:
+return 1;
+
+The return statement has a special meaning in main() (and only in main(), not in
+ any other function), and it’s the equivalent of calling exit() with the value 
+specified in the return statement as the argument.
+Thus, the value in the return statement will be passed back to the operating 
+system.
+
+Libraries of Functions: Header Files
+your compiler comes with a wide range of standard functions that are
+declared in header files, sometimes called include files.
+
+Header File	Functions
+------------------------------
+<stdio.h>	Input/output functions
+
+<stdarg.h> 	Macros supporting a variable number of arguments 
+		to a function
+<math.h> 	Mathematical floating-point functions
+
+<stdlib.h> 	Memory allocation functions
+
+<string.h> 	String-handling functions
+
+<stdbool.h> 	bool type and Boolean values true and false
+
+<complex.h> 	Complex number support
+
+<ctype.h> 	Character classification functions
+
+<wctype.h> 	Wide character conversion functions
+
+I strongly recommend that you invest some time in becoming familiar with the 
+contents of these header files and the libraries that are supplied with 
+your compiler.
+
+This familiarity will greatly
+increase the ease with which you can develop applications in C.
+
+Enhancing Performance
+---------------------
+You have two facilities that are intended to provide cues to your compiler 
+to generate code with better performance:
+One relates to how short function calls are compiled and the other is concerned 
+with the use of pointers.
+
+Declaring Functions inline:
+With very short functions it is possible to
+improve execution performance by replacing each function call of a short function
+with inline code that implements the effects of the function.
+
+You can indicate that you would like this technique to be
+applied by the compiler by specifying a short function as inline.
+For example:
+inline double bmi(double kg_wt, double m_height)
+{
+  return kg_wt/(m_height*m_height);
+}
+
+This is specified by the inline keyword in the function header. 
+There’s no guarantee in general that the compiler will take note of a function
+being declared as inline though.
+
+Using the restrict Keyword:
+Sophisticated C compilers have the capability to optimize the performance of the 
+object code
+and this can involve changing the sequence in which calculations occur compared to
+ the sequence in which you specify operations in the code.
+
+For such code optimization to be possible, the compiler
+must be sure that such resequencing of operations will not affect the result of 
+the calculations.
+
+To allow optimization of code involving pointers, the compiler has to be certain 
+that the pointers are not aliased — in other words the data
+item that each pointer references is not referenced by some other 
+means in a given scope.
+
+The restrict keyword provides a way for you to tell the compiler when this is 
+the case and thus allows code optimization to be applied.
+
+Here’s an example of a function that is declared in <string.h>:
+
+char *strcpy(char * restrict s1, char * restrict s2)
+{
+ /* Implementation of the function to copy s2 to s1 */
+}
+
+This function copies s2 to s1. The restrict keyword is applied to both parameters thus indicating that the strings referenced by s1 and s2 are only referenced 
+through those pointers in the body of the function, 
+so the compiler can optimize the code generated for the function.
+
+Most of the time you won’t need to use the restrict keyword. Only if your code is very computationally intensive will it have any appreciable effect, and even then
+it depends on your compiler.
+
+A functional structure is inherent to the C language, and you should keep your 
+functions short with a well-defined purpose. 
+This is the essence of good C code.
+
+
+
+
 
 
 
