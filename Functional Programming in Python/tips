@@ -252,4 +252,159 @@ result, and that is exactly what reduce() does at heart.
 A slightly longer discussion of functools.reduce() occurs in the chapter on
 higher-order functions.
 
+Callables
+---------
+Python actually gives us several different ways to create functions. They are:
+
+1) Regular functions created with def and given a name at definition time
+2) Anonymous functions created with lambda
+3) Instances of classes that define a __call()__ method
+4) Closures returned by function factories
+5) Static methods of instances, either via the @staticmethod decorator or via the
+  class __dict__
+6) Generator functions
+
+Named Functions and Lambdas:
+The only inprinciple difference between them is simply whether they have
+a .__qualname__ attribute, since both can very well be bound to one
+or more names.
+
+Closures and Callable Instances:
+There is a saying in computer science that a class is “data with operations 
+attached” while a closure is “operations with data attached.”
+
+Let us construct a toy example that shows this:
+
+# A class that creates callable adder instances
+class Adder(object):
+    def __init__(self, n):
+        self.n = n
+    def __call__(self, m):
+        return self.n + m
+add5_i = Adder(5) # "instance" or "imperative"
+
+We have constructed something callable that adds five to an argument passed in.
+
+Let us also try it as a closure:
+
+def make_adder(n):
+    def adder(m):
+        return m + n
+    return adder
+add5_f = make_adder(5)	# "functional"
+
+So far these seem to amount to pretty much the same thing, but the
+mutable state in the instance provides a attractive nuisance:
+
+>>> add5_i.n = 10	# state is readily changeable
+>>> add5_i(10)	# result is dependent on prior flow
+20
+
+Once the object exists, the closure behaves in a pure functional
+way, while the class instance remains state dependent.
+
+Methods of Classes
+------------------
+All methods of classes are callables. However, calling a method of an instance 
+goes against the grain of functional programming styles.
+Since each call to a method may produce a different result that
+varies independently of the arguments passed to it.
+
+Accessors and Operators
+Even accessors, whether created with the @property decorator or
+otherwise, are technically callables
+
+class Car(object):
+    def __init__(self):
+        self._speed = 100
+
+    @property
+    def speed(self):
+	print("Speed is", self._speed)
+	return self._speed
+
+    @speed.setter
+    def speed(self, value):
+	print("Setting to", value)
+	self._speed = value
+
+>> car = Car()
+>>> car.speed = 80 # Odd syntax
+Setting to 80
+>>> x = car.speed
+Speed is 80 
+
+Operator in Python:
+
+class TalkativeInt(int):
+    def __lshift__(self, other):
+	print("Shift", self, "by", other)
+	return int.__lshift__(self, other)
+
+>>> t = TalkativeInt(8)
+>>> t << 3
+Shift 8 by 3
+64
+
+Every operator in Python is basically a method call “under the hood.”
+
+Static Methods of Instances
+One use of classes and their methods is to use them simply as
+namespaces to hold a variety of related functions:
+
+import math
+class RightTriangle(object):
+   "Class used solely as namespace for related functions"
+   @staticmethod
+   def hypotenuse(a, b):
+	return math.sqrt(a**2 + b**2)
+
+   @staticmethod
+   def sin(a, b):
+	return a / RightTriangle.hypotenuse(a, b)
+
+   @staticmethod
+   def cos(a, b):
+	return b / RightTriangle.hypotenuse(a, b)
+
+Keeping this functionality in a class avoids polluting the global (or
+module, etc.) namespace. For example:
+
+>>> RightTriangle.hypotenuse(3,4)
+5.0
+>>> rt = RightTriangle()
+>>> rt.sin(3,4)
+0.6
+>>> rt.cos(3,4)
+0.8
+
+By far the most straightforward way to define static methods is with
+the decorator named @staticmethod.
+
+However, in Python 3.x, you can write this:
+
+import functools, operator
+class Math(object):
+    def product(*nums):
+	return functools.reduce(operator.mul, nums)
+    def power_chain(*nums):
+	return functools.reduce(operator.pow, nums)
+
+>>> Math.product(3,4,5)
+60
+>>> Math.power_chain(3,4,5)
+3486784401
+
+Without @staticmethod , however, this will not work on the instances 
+since they still expect to be passed self :
+
+>>> m = Math()
+>>> m.product(3,4,5)
+TypeError
+
+Generator Functions
+-------------------
+
+
+
 
