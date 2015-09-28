@@ -1,0 +1,17 @@
+ghci
+pi -- constant in haskell
+
+we can change command prompt with:
+:set prompt "GHCi> "
+
+to declare module we write:
+module Test where
+
+... here source code ...
+
+:l module -- load module
+
+:reload module -- to reload module
+or :r	module
+
+
