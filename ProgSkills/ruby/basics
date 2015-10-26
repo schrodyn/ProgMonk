@@ -159,7 +159,7 @@ end
 three dots "..." tells Ruby to exclude the final number in the count
 if we use two dots ".." this tells Ruby to include the final number
 
-interator:
+iterator:
 ------------------------
 
 i = 20
@@ -226,15 +226,6 @@ odds = [1,3,5,7,9]
 
 odds.each {|x| print x*2}
 
------------------
-odds = [1,3,5,7,9]
-
-odds.each {|x| print x*2}
-
------------------
-odds = [1,3,5,7,9]
-
-odds.each {|x| print x*2}
 
 .times iterator:
 ----------------
@@ -559,5 +550,263 @@ DELETE from Hash
 ----------------
 
 to remove a movie/rating pair from our hash: we just write movies.delete(title)!
+
+-----------------
+
+ruby_is_eloquent = true
+puts "Ruby is eloquent!" if ruby_is_eloquent
+
+ternary conditional expression
+------------------------------
+
+puts 3 < 4 ? "3 is less than 4!" : "3 is not less than 4."
+
+When and Then Case statement
+----------------------------
+
+case language
+  when "JS" then puts "Websites!"
+  when "Python" then puts "Science!"
+  when "Ruby" then puts "Web apps!"
+  else puts "I don't know!"
+end
+
+Conditional Assignment
+------------------------------
+
+favorite_book = nil
+favorite_book ||= "Cat's Cradle"
+
+Since the value of the variable was nothing before, Ruby goes ahead and sets it
+
+JavaScript return *undefined* by default. For Python, the default return value is
+None. But Ruby's methods will return the result of the last evaluated expression.
+
+def add(a,b)
+  return a + b
+end
+
+def add(a,b)
+  a + b
+end
+
+Are the same
+
+--------------------------------
+
+def a
+  puts "A was evaluated!"
+  return true
+end
+
+def b
+  puts "B was also evaluated!"
+  return true
+end
+
+puts a || b
+puts "------"
+puts a && b
+
+---------------------------------
+
+my_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+my_array.each{ |x| puts x if x % 2 == 0}
+
+95.upto(100) { |num| print num, " " }
+# Prints 95 96 97 98 99 100
+
+and we can use .downto to do the same thing with descending values.
+
+'L'.upto('P') {|ch| puts ch}
+
+---------------------------------
+
+.respond_to? takes a symbol and returns true if an object can receive that method
+ and false otherwise.
+
+[1, 2, 3].respond_to?(:push)
+
+would return true, since you can call .push on an array object.
+
+However, [1, 2, 3].respond_to?(:to_sym) would return false, since you can't turn 
+an array into a symbol.
+
+-----------------------------------
+
+to add an element to the end of an array:
+you can use .push method or
+
+[1, 2, 3] << 4
+# ==> [1, 2, 3, 4]
+
+"Yukihiro " << "Matsumoto"
+# ==> "Yukihiro Matsumoto"
+
+-------------------------------------
+Conditional assignment
+
+favorite_animal = nil
+favorite_animal ||= "Bear"
+
+if it's false then assign
+
+def square(n)
+    n*n
+end
+
+--------------------------------------
+The collect method takes a block and applies the expression in the block to every
+element in an array. 
+
+my_nums = [1, 2, 3]
+my_nums.collect { |num| num ** 2 }
+# ==> [1, 4, 9]
+
+If we look at the value of my_nums, though, we'll see it hasn't changed:
+my_nums
+# ==> [1, 2, 3]
+
+This is because .collect returns a copy of my_nums
+To overwrite my_nums
+my_nums.collect! { |num| num ** 2 }
+
+fibs = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+doubled_fibs = fibs.collect {|x| x*2}
+
+--------------------------------------
+yield
+
+def double(n)
+    yield 2*n
+    yield 4*n
+end
+
+double(2) {|x| puts "2 is doubled and now #{x}!"}
+
+----------------
+Procs
+
+multiples_of_3 = Proc.new do |n|
+  n % 3 == 0
+end
+
+(1..100).to_a.select(&multiples_of_3)
+
+Procs are easy to define! You just call Proc.new and pass in the block you want to
+save.
+
+Here's how we'd create a proc called cube that cubes a number :
+cube = Proc.new { |x| x ** 3 }
+
+[1, 2, 3].collect!(&cube)
+# ==> [1, 8, 27]
+
+[4, 5, 6].map!(&cube)
+# ==> [64, 125, 216]
+
+The .collect! and .map! methods do the exact same thing.
+
+
+The & is used to convert the cube proc into a block
+
+floats = [1.2, 3.45, 0.91, 7.727, 11.42, 482.911]
+round_down = Proc.new {|x| x.floor}
+ints = floats.collect(&round_down)
+
+The .floor method rounds a float down to the nearest integer.
+
+we can call procs directly by using Ruby's .call method.
+test = Proc.new { # does something }
+test.call
+
+hi = Proc.new {puts "Hello!"}
+hi.call
+
+strings = ["1", "2", "3"]
+nums = strings.map(&:to_i)
+# ==> [1, 2, 3]
+
+--------------------------------
+The Ruby Lambda
+
+Like procs, lambdas are objects. 
+
+lambda { puts "Hello!" }
+
+Is just about the same as
+
+Proc.new { puts "Hello!" }
+
+
+def lambda_demo(a_lambda)
+  puts "I'm the method!"
+  a_lambda.call
+end
+
+lambda_demo(lambda { puts "I'm the lambda!" })
+Lambdas are defined using the following syntax:
+
+lambda { |param| block }
+
+
+strings = ["leonardo", "donatello", "raphael", "michaelangelo"]
+
+symbolize = lambda {|s| s.to_sym}
+
+symbols = strings.collect(&symbolize)
+# => [:leonardo, :donatello, :raphael, :michaelangelo]
+
+-------------------------------
+Lambdas vs. Procs
+
+There are only two main differences.
+First, a lambda checks the number of arguments passed to it, while a proc does 
+not. This means that a lambda will throw an error if you pass it the wrong number
+of arguments
+
+Second, when a lambda returns, it passes control back to the calling method;
+when a proc returns without going back to the calling method.
+
+------------------------------
+
+.is_a? method, which returns true if an object is the type of object named and 
+false otherwise:
+
+:hello.is_a? Symbol
+# ==> true
+
+my_array = ["raindrops", :kettles, "whiskers", :mittens, :packages]
+
+# Add your code below!
+symbol_filter = lambda {|s| s.is_a? Symbol}
+symbols = my_array.select(&symbol_filter)
+
+-------------------------------
+Quick Review
+
+A block is just a bit of code between do..end or {}. It's not an object on its own
+, but it can be passed to methods like .each or .select.
+
+A proc is a saved block we can use over and over.
+
+A lambda is just like a proc, only it cares about the number of arguments it gets 
+and it returns to its calling method rather than returning immediately.
+
+
+crew = {
+  captain: "Picard",
+  first_officer: "Riker",
+  lt_cdr: "Data",
+  lt: "Worf",
+  ensign: "Ro",
+  counselor: "Troi",
+  chief_engineer: "LaForge",
+  doctor: "Crusher"
+}
+# Add your code below!
+first_half = lambda {|key, value| value <= 'M'}
+a_to_m = crew.select(&first_half)
+
 
 
