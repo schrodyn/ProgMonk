@@ -156,6 +156,19 @@ The b 8 2 specifies a block device with a major number 8 and a minor number 2.
 For character or named pipe devices, use c or p instead of b
 (omit the major and minor numbers for named pipes)
 
+If you issue the ls -l command, you'll see two numbers (separated by a comma) in 
+the device file entries before the date of the last modification, where the file 
+length normally appears.
+
+These numbers are the major and minor device number for the particular device.
+
+Traditionally, the major number identifies the driver associated with the device.
+For example, /dev/null and /dev/zero are both managed by driver 1,
+whereas virtual consoles and serial terminals are managed by driver 4; 
+
+The minor number is used by the kernel to determine exactly which device is being 
+referred to.
+
 udev
 ----
 The Linux kernel can send notifications to a user-space process (called udevd) 
