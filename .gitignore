@@ -1,0 +1,3 @@
+#allow all files with extensions
+!*.*
+*.o
