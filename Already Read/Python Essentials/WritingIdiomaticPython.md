@@ -575,5 +575,632 @@ def get_formatted_user_info(user):
     return output
 
 
+5) Use a `list comprehension` to create a transformed version of an existing list
+
+`list comprehension`s increase clarity in code that builds a list from existing 
+data.
+There are also (usually) performance benefits to using a `list comprehension`
+(or alternately, a `generator expression` ) due to optimizations in the cPython 
+interpreter.
+
+Harmful:
+
+some_other_list = range(10)
+some_list = list()
+for element in some_other_list:
+    if is_prime(element):
+	some_list.append(element + 5)
+
+
+Idiomatic:
+
+some_other_list = range(10)
+some_list = [element + 5 for element in some_other_list if is_prime(element)]
+
+
+6) Use the * operator to represent the “rest” of a list
+
+(Only for python 3)
+Often times, it’s useful to extract a few elements at the beginning (or end) of a
+list while keeping the “rest” for use later.
+Python 3 allows you to use the * operator on the left hand side of an
+assignment to represent the rest of a sequence .
+
+Harmful:
+
+some_list = ['a', 'b', 'c', 'd', 'e']
+(first, second, rest) = some_list[0], some_list[1], some_list[2:]
+print(rest)
+(first, middle, last) = some_list[0], some_list[1:-1], some_list[-1]
+print(middle)
+(head, penultimate, last) = some_list[:-2], some_list[-2], some_list[-
+print(head)
+
+Idiomatic:
+
+some_list = ['a', 'b', 'c', 'd', 'e']
+(first, second, *rest) = some_list
+print(rest)
+(first, *middle, last) = some_list
+print(middle)
+(*head, penultimate, last) = some_list
+print(head)
+
+
+7) Use a `dict` as a substitute for a `switch...case` statement 
+
+Unlike many other languages, Python doesn’t have a `switch...case` construct.
+The naive alternative in Python is to write a series of `if...else` statements.
+
+Thankfully, functions are first-class objects in Python, so we can treat them
+the same as any other variable.
+Rather than trying to emulate the exact functionality, we can take advantage of 
+the fact that functions are first-class object and can be stored as values in a 
+`dict`.
+
+Using this method, one could create a Factory class that chooses
+which type to instantiate via a parameter.
+Or it could be used to store states and their transitions when building a state 
+machine.
+
+Harmful:
+
+def apply_operation(left_operand, right_operand, operator):
+    if operator == '+':
+	return left_operand + right_operand
+    elif operator == '-':
+	return left_operand - right_operand
+    elif operator == '*':
+	return left_operand * right_operand
+    elif operator == '/':
+	return left_operand / right_operand
+
+
+Idiomatic:
+
+def apply_operation(left_operand, right_operand, operator):
+    import operator as op
+    operator_mapper = {'+': op.add, '-': op.sub,
+	    '*': op.mul, '/': op.truediv}
+    return operator_mapper[operator](left_operand, right_operand)
+
+
+8) Use the `default` parameter of `dict.get` to provide default values
+
+Harmful:
+
+log_severity = None
+if 'severity' in configuration:
+    log_severity = configuration['severity']
+else:
+    log_severity = 'Info'
+
+
+Idiomatic:
+
+log_severity = configuration.get('severity', 'Info')
+
+9) Use a `dict comprehension` to build a `dict` clearly and efficiently
+
+Harmful:
+
+user_email = {}
+for user in users_list:
+    if user.email:
+	user_email[user.name] = user.email
+
+Idiomatic:
+
+user_email = {user.name: user.email for user in users_list if user.email}
+
+--------------
+Sets
+
+10) Understand and use the mathematical `set` operations
+
+Like a `dict` with keys but no values, the `set` class implements the `Iterable` 
+and `Container` interfaces. Thus, a `set` can be used in a `for` loop or as the 
+subject of an `in` statement.
+
+Set operations in Python:
+
+* Union
+  The set of elements in A , B , or both A and B (written A | B in Python)
+* Intersection
+  The set of elements in both A and B (written A & B in Python)
+* Difference
+  The set of elements in A but not B (written A - B in Python)
+* Symmetric Difference
+  The set of elements in either A or B , but not both A and B (written A ^ B in 
+  Python)
+
+When working with lists of data, a common task is finding the elements that 
+appear in all of the lists. Look to use a `set`.
+
+Harmful:
+
+def get_both_popular_and_active_users():
+    # Assume the following two functions each return a
+    # list of user names
+    most_popular_users = get_list_of_most_popular_users()
+    most_active_users = get_list_of_most_active_users()
+    popular_and_active_users = []
+    for user in most_active_users:
+	if user in most_popular_users:
+	    popular_and_active_users.append(user)
+
+    return popular_and_active_users
+
+
+Idiomatic:
+
+def get_both_popular_and_active_users():
+    # Assume the following two functions each return a
+    # list of user names
+    return (set(
+	get_list_of_most_active_users()) & set(
+	    get_list_of_most_popular_users()))
+
+
+11) Use a `set comprehension` to generate sets concisely
+
+Harmful:
+
+users_first_names = set()
+for user in users:
+    users_first_names.add(user.first_name)
+
+
+Idiomatic:
+
+users_first_names = {user.first_name for user in users}
+
+12) Use sets to eliminate duplicate entries from `Iterable` containers
+
+It’s quite common to have a `list` or `dict` with duplicate values.
+Three aspects of sets make them the perfect answer to our
+problem:
+
+1) A `set` contains only unique elements
+2) Adding an already existing element to a `set` is essentially “ignored”
+3) A `set` can be built from any `Iterable` whose elements are hashable
+
+Harmful:
+
+unique_surnames = []
+for surname in employee_surnames:
+    if surname not in unique_surnames:
+	unique_surnames.append(surname)
+
+def display(elements, output_format='html'):
+    if output_format == 'std_out':
+	for element in elements:
+	    print(element)
+    elif output_format == 'html':
+	as_html = '<ul>'
+	for element in elements:
+	    as_html += '<li>{}</li>'.format(element)
+	return as_html + '</ul>'
+    else:
+	raise RuntimeError('Unknown format {}'.format(output_format))
+
+
+Idiomatic:
+
+unique_surnames = set(employee_surnames)
+
+def display(elements, output_format='html'):
+    #as previous example...
+
+
+------------------------
+Tuples
+
+13) Use `collections.namedtuple` to make `tuple`-heavy code more clear
+
+The `tuple` is a fantastically useful data structure in Python.
+Most database libraries, for example, use `tuples` to represent a single row in a 
+database table.
+Queries that return multiple rows are represented as lists of `tuples`.
+
+A `namedtuple` is a normal tuple with a few extra capabilities. Most importantly,
+`namedtuples` give you the ability to access fields by names rather than by index.
+
+`collections.namedtuple` is a powerful tool for increasing the readability and
+maintainability of code.
+
+Harmful:
+
+# Assume the 'employees' table has the following columns:
+# first_name, last_name, department, manager, salary, hire_date
+def print_employee_information(db_connection):
+    db_cursor = db_connection.cursor()
+    results = db_cursor.execute('select * from employees').fetchall()
+    for row in results:
+	# It's basically impossible to follow what's getting printed
+	print(row[1] + ', ' + row[0] + ' was hired '
+	'on ' + row[5] + ' (for $' + row[4] + ' per annum)'
+	' into the ' + row[2] + ' department and reports to ' + row[3])
+
+
+Idiomatic:
+
+# Assume the 'employees' table has the following columns:
+# first_name, last_name, department, manager, salary, hire_date
+from collections import namedtuple
+
+EmployeeRow = namedtuple('EmployeeRow', ['first_name',
+'last_name', 'department', 'manager', 'salary', 'hire_date'])
+
+EMPLOYEE_INFO_STRING = '{last}, {first} was hired on {date} \
+  ${salary} per annum) into the {department} department and reports to \
+ager}'
+
+def print_employee_information(db_connection):
+    db_cursor = db_connection.cursor()
+    results = db_cursor.execute('select * from employees').fetchall()
+    for row in results:
+	employee = EmployeeRow._make(row)
+	
+	# It's now almost impossible to print a field in the wrong place
+	print(EMPLOYEE_INFO_STRING.format(
+	    last=employee.last_name,
+	    first=employee.first_name,
+	    date=employee.hire_date,
+	    salary=employee.salary,
+	    department=employee.department,
+	    manager=employee.manager))
+
+
+14) Use _ as a placeholder for data in a tuple that should be ignored
+
+Harmful:
+
+(name, age, temp, temp2) = get_user_info(user)
+if age > 21:
+    output = '{name} can drink!'.format(name=name)
+# "Wait, where are temp and temp2 being used?"
+
+Idiomatic:
+
+(name, age, _, _) = get_user_info(user)
+if age > 21:
+    output = '{name} can drink!'.format(name=name)
+# "Clearly, only name and age are interesting"
+
+
+15) Use `tuples` to unpack data 
+
+In Python, it is possible to “unpack” data for multiple assignment.
+
+Harmful:
+
+list_from_comma_separated_value_file = ['dog', 'Fido', 10]
+animal = list_from_comma_separated_value_file[0]
+name = list_from_comma_separated_value_file[1]
+age = list_from_comma_separated_value_file[2]
+output = ('{name} the {animal} is {age} years old'.format(
+	animal=animal, name=name, age=age))
+
+
+Idiomatic:
+
+list_from_comma_separated_value_file = ['dog', 'Fido', 10]
+(animal, name, age) = list_from_comma_separated_value_file
+output = ('{name} the {animal} is {age} years old'.format(
+	animal=animal, name=name, age=age))
+
+
+16) Use a `tuple` to return multiple values from a function
+
+While it’s true that only one object can be returned from a function, that object
+may contain multiple logical values.
+A `tuple` is ideally suited to be used as a way to return multiple values from a 
+function.
+
+Harmful:
+
+from collections import Counter
+
+STATS_FORMAT = """Statistics:
+Mean: {mean}
+Median: {median}
+Mode: {mode}"""
+
+def calculate_mean(value_list):
+    return float(sum(value_list) / len(value_list))
+
+def calculate_median(value_list):
+    return value_list[int(len(value_list) / 2)]
+
+def calculate_mode(value_list):
+    return Counter(value_list).most_common(1)[0][0]
+
+values = [10, 20, 20, 30]
+mean = calculate_mean(values)
+median = calculate_median(values)
+mode = calculate_mode(values)
+
+print(STATS_FORMAT.format(mean=mean, median=median, mode=mode))
+
+
+Idiomatic:
+
+from collections import Counter
+
+STATS_FORMAT = """Statistics:
+Mean: {mean}
+Median: {median}
+Mode: {mode}"""
+
+def calculate_staistics(value_list):
+    mean = float(sum(value_list) / len(value_list))
+    median = value_list[int(len(value_list) / 2)]
+    mode = Counter(value_list).most_common(1)[0][0]
+    return (mean, median, mode)
+
+(mean, median, mode) = calculate_staistics([10, 20, 20, 30])
+print(STATS_FORMAT.format(mean=mean, median=median, mode=mode))
+
+
+----------------------
+Classes
+
+1) Use leading underscores in function and variable names 
+to denote “private” data
+
+All attributes of a class, be they data or functions, are inherently “public” in 
+Python. 
+A number of widely followed conventions have arisen to make the author’s 
+intention more explicit and help avoid unintentional naming conflicts.
+
+First, attributes to be ‘protected’, which are not meant to be used directly by 
+clients, should be prefixed with a single underscore.
+Second, ‘private’ attributes not meant to be
+accessible by a subclass should be prefixed by *two underscores*.
+
+Of course, these are (mostly) merely conventions. Nothing would stop a client 
+from being able to access your ‘private’ attributes.
+If `Foo` is a class, the definition `def __bar()` will
+be ‘mangled’ to `_classname__attributename` in subclasses.
+
+class Foo():
+    def __init__(self):
+	self.id = 8
+	self.value = self.get_value()
+
+    def get_value(self):
+	pass
+
+    def should_destroy_earth(self):
+	return self.id == 42
+
+class Baz(Foo):
+    def get_value(self, some_new_parameter):
+	"""Since 'get_value' is called from the base class's
+	__init__ method and the base class definition doesn't
+	take a parameter, trying to create a Baz instance will
+	fail.
+
+	"""
+	pass
+
+class Qux(Foo):
+    """We aren't aware of Foo's internals, and we innocently
+    create an instance attribute named 'id' and set it to 42.
+    This overwrites Foo's id attribute and we inadvertently
+    blow up the earth.
+
+    """
+
+    def __init__(self):
+	super(Qux, self).__init__()
+	self.id = 42
+	# No relation to Foo's id, purely coincidental
+
+q = Qux()
+b = Baz() # Raises 'TypeError'
+q.should_destroy_earth() # returns True
+q.id == 42 # returns True
+
+
+Idiomatic:
+
+class Foo():
+    def __init__(self):
+	"""Since 'id' is of vital importance to us, we don't
+	want a derived class accidentally overwriting it. We'll
+	prepend with double underscores to introduce name
+	mangling.
+	"""
+	self.__id = 8
+	self.value = self.__get_value() # Our 'private copy'
+
+    def get_value(self):
+	pass
+
+    def should_destroy_earth(self):
+	return self.__id == 42
+
+    # Here, we're storing a 'private copy' of get_value,
+    # and assigning it to '__get_value'. Even if a derived
+    # class overrides get_value in a way incompatible with
+    # ours, we're fine
+    __get_value = get_value
+
+
+class Baz(Foo):
+    def get_value(self, some_new_parameter):
+	pass
+
+class Qux(Foo):
+    def __init__(self):
+	"""Now when we set 'id' to 42, it's not the same 'id'
+	that 'should_destroy_earth' is concerned with. In fact,
+	if you inspect a Qux object, you'll find it doesn't
+	have an __id attribute. So we can't mistakenly change
+	Foo's __id attribute even if we wanted to.
+
+	"""
+	self.id = 42
+	# No relation to Foo's id, purely coincidental
+	super(Qux, self).__init__()
+
+q = Qux()
+b = Baz() # Works fine now
+q.should_destroy_earth() # returns False
+q.id == 42 # returns True
+with pytest.raises(AttributeError):
+    getattr(q, '__id')
+
+
+2) Use `properties` to “future-proof” your class implementation
+
+Oftentimes, it is convenient to provide direct access to a class’s data 
+attributes. 
+Point class, for example, may have x and y attributes rather than using 
+“getter” and “setter” functions.
+However, there’s a reason “getters” and “setters” exist: you never know when what 
+once was pure data will require calculation instead.
+Suppose we have a `Product` class that is initizialized with a product’s name 
+and its price
+
+If we are later asked to apply tax to a product’s price
+automatically, does that mean we go through the code and change all occurrences 
+of `product.price` to `product.price * TAX_RATE` ?
+Not if we thought ahead and made `price` a property!
+
+Harmful:
+
+class Product():
+    def __init__(self, name, price):
+	self.name = name
+	# We could try to apply the tax rate here, but the object's price
+	# may be modified later, which erases the tax
+	self.price = price
+
+
+Idiomatic:
+
+class Product():
+    def __init__(self, name, price):
+	self.name = name
+	self._price = price
+
+    @property
+    def price(self):
+	# now if we need to change how price is calculated, we can do it
+	# here (or in the "setter" and __init__)
+	return self._price * TAX_RATE
+
+    @price.setter
+    def price(self, value):
+	# The "setter" function must have the same name as the property
+	self._price = value
+
+
+3) Define `__str__` in a class to show a human-readable representation
+
+When defining a class that is likely to be used with `print()` , the default 
+Python representation isn’t too helpful. 
+By defining a `__str__` method, you can control how
+calling `print` on an instance of your class will look.
+
+Harmful:
+
+class Point():
+    def __init__(self, x, y):
+	self.x = x
+	self.y = y
+
+p = Point(1, 2)
+print (p)
+# Prints '<__main__.Point object at 0x91ebd0>'
+
+
+Idiomatic:
+
+class Point():
+    def __init__(self, x, y):
+	self.x = x
+	self.y = y
+
+    def __str__(self):
+	return '{0}, {1}'.format(self.x, self.y)
+
+p = Point(1, 2)
+print (p)
+# Prints '1, 2'
+
+
+-----------------------
+Context Managers
+
+1) Use a `context manager` to ensure resources are properly managed
+
+`context managers` (objects meant to be used with the `with` statement) can make 
+resource management both safer and more explicit. 
+The canonical example is file IO.
+
+There are a number of classes in the standard library that support or use a 
+`context manager`. In addition, user defined classes can be easily made to work 
+with a `context manager` by defining `__enter__` and `__exit__` methods.
+
+Harmful:
+
+file_handle = open(path_to_file, 'r')
+for line in file_handle.readlines():
+    if raise_exception(line):
+	print('No! An Exception!')
+
+
+Idiomatic:
+
+with open(path_to_file, 'r') as file_handle:
+    for line in file_handle:
+	if raise_exception(line):
+	    print('No! An Exception!')
+
+
+
+-------------------------------
+Generators
+
+1) Prefer a `generator expression` to a `list comprehension` for simple iteration
+
+When dealing with a `sequence`, it is common to need to iterate over a slightly 
+modified version of the `sequence` a single time.
+
+A `list comprehension` seems ideal, but there’s an even better Python built-in: 
+a `generator expression`.
+
+The main difference? A `list comprehension` generates a list object and fills in 
+all of the elements immediately. For large lists, this can be prohibitively 
+expensive.
+The `generator` returned by a `generator expression`, on the other hand, 
+generates each element “on-demand”.
+
+
+Harmful:
+
+for uppercase_name in [name.upper() for name in get_all_usernames()]:
+    process_normalized_username(uppercase_name)
+
+
+Idiomatic:
+
+for uppercase_name in (name.upper() for name in get_all_usernames()):
+    process_normalized_username(uppercase_name)
+
+
+2) Use a `generator` to lazily load infinite sequences
+
+Often, it’s useful to provide a way to iterate over a `sequence` that’s 
+essentially infinite.
+A `generator` is a special type of coroutine which returns an `iterable`.
+The state of the `generator` is saved, so that the next call
+into the `generator` continues where it left off.
+
+Harmful:
 
 
