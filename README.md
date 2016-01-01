@@ -2,4 +2,4 @@
 
 > Not thinking about anything is Zen. Once you know
 > this, walking, standing, sitting, or lying down, everything you do is Zen.
-> —Bodhidharma (Red Pine, 1987)
+> —Bodhidharma
