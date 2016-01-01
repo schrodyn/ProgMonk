@@ -299,7 +299,7 @@ img {
 Therefore, we can select the <div class="container">..</div> inside
 <div class="jumbotron">..</div> in CSS like this:
 
-```css
+```
 .jumbotron .container {
   ...
 }

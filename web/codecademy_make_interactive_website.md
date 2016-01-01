@@ -424,10 +424,10 @@ $(document).ready(main)
 In jQuery, we often see $( ). It has two main uses:
 
   1. To select existing HTML elements on the page.
-  $('p') selects all p elements on the page.
+  `$('p')` selects all p elements on the page.
 
   2. To create new HTML elements to add to the page.
-  $('<h1>') creates a new h1 element. The < > indicates that we want to create a
+  `$('<h1>')` creates a new h1 element. The `< >` indicates that we want to create a
   new HTML element.
 
 ##.text()
