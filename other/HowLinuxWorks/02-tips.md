@@ -103,6 +103,7 @@ To search for a manual page by keyword, use the -k option:
 `man -k` keyword
 
 manual pages have different sections for other purposes:
+
 Section  |	Description
 ---------|--------------
 1	|	User commands
