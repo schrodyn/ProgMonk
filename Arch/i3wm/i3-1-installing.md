@@ -34,9 +34,9 @@ When you first start i3, you will be welcomed by `i3-config-wizard`:
 
 ```
 You have not configured i3 yet.
-Do you want me to generate ~/.i3/config?
+Do you want me to generate ~/.config/i3/config?
 
-<Enter> Yes, generate ~/.i3/config
+<Enter> Yes, generate ~/.config/i3/config
 <Esc>   No, I will use the defaults
 ```
 
@@ -54,9 +54,6 @@ Afterwards, press
 Use the `Win` and `Alt` keys to switch between the modifiers and choose one of them.
 In this tutorial I use `Alt` as the default modifier.
 
-If you are a vim user, you may want to edit `~/.i3/config` to use VI’s default `hjkl` keys for changing
-focus instead of i3’s default `jkl;`
-
 It would be good to know some basic shortcuts before starting X.
 
   * `modkey + return` to start a terminal.
@@ -69,7 +66,7 @@ It would be good to know some basic shortcuts before starting X.
 
 ##Changing i3 Modifier Key(s)
 
-It is easy to change or add i3 modifiers. Right at the top of the `~/.i3/config` file you'll see:
+It is easy to change or add i3 modifiers. Right at the top of the `~/.config/i3/config` file you'll see:
 
 `Alt` as the default modifier:
 
