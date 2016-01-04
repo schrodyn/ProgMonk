@@ -39,3 +39,54 @@ font pango:DejaVu Sans Mono 10
 font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 font pango:Terminus 11px
 ```
+
+##Infanality
+
+The `infinality` patchset aims to greatly improve font rendering. It adds multiple new capabilities.
+
+###Installation
+
+`Infinality-bundle` is a collection of software aiming to improve text rendering in Arch Linux.
+
+To install it add to `pacman.conf`:
+
+```
+[infinality-bundle]
+Server = http://bohoomil.com/repo/$arch
+
+[infinality-bundle-multilib]
+Server = http://bohoomil.com/repo/multilib/$arch
+```
+
+Then add repository key id to pacman keyring:
+
+```
+# pacman-key -r 962DDE58
+```
+
+verify the fingerprint
+
+```
+# pacman-key -f 962DDE58
+```
+
+Finally, you need to locally sign the imported key:
+
+```
+# pacman-key --lsign-key 962DDE58
+```
+
+You now trust this key to sign packages.
+
+Synchronising package databases:
+
+```
+# pacman -Syy
+```
+
+Then install packages
+
+```
+# pacman -S freetype2-infinality-ultimate
+# pacman -S lib32-freetype2-infinality-ultimate
+```
