@@ -161,3 +161,5 @@ bindsym $mod+Shift+x exec i3lock
 
 bindsym F10 exec --no-startup-id increase-brightness.sh
 bindsym F9 exec --no-startup-id decrease-brightness.sh
+
+exec_always feh --bg-scale /home/mind/pictures/Ama-Dablam-Himalaya.jpg
