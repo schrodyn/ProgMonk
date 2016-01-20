@@ -1,0 +1,14 @@
+set recolor true
+set recolor_darkcolor #BDE090
+set recolor_lightcolor #000000
+
+map <C-i> zoom in
+map <C-o> zoom out
+
+map <C-d> zoom best-fit
+
+set scroll-step 80
+
+map <C-y> scroll half-down
+map <C-u> scroll half-up
+
