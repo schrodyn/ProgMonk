@@ -9,3 +9,25 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 export EDITOR=vim
+
+rmtrash() {
+    if [ $# -eq 0 ]
+    then
+	echo "usage: rmtrash [file]"
+	exit 1
+    fi
+
+    rm -r ~/.Trash/$1    
+}
+
+mvtrash() {
+    if [ $# -eq 0 ]
+    then
+	echo "usage: mvtrash [file]"
+	exit 1
+    fi
+
+    mv $1 ~/.Trash
+}
+
+alias lstrash='ls ~/.Trash'
