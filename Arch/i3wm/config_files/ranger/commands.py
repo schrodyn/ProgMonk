@@ -1,0 +1,1 @@
+/home/mind/.config/ranger/commands.py
