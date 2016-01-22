@@ -1,6 +1,6 @@
 set recolor true
-set recolor_darkcolor #BDE090
-set recolor_lightcolor #000000
+set recolor-darkcolor "#dddddd"
+set recolor-lightcolor "#2e2e2e"
 
 map <C-i> zoom in
 map <C-o> zoom out
