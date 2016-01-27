@@ -81,7 +81,7 @@ set $workspace5 "5"
 # switch to workspace
 
 set $default_bright "set-brightness-param.sh 105"
-set $lower_bright "set-brightness-param.sh 80"
+set $lower_bright "set-brightness-param.sh 67"
 
 bindsym $mod+1 workspace $workspace1; exec --no-startup-id $default_bright
 bindsym $mod+2 workspace $workspace2; exec --no-startup-id $lower_bright
