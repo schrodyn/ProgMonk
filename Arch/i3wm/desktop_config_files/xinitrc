@@ -1,0 +1,5 @@
+xrdb ~/.Xresources
+setxkbmap -layout us,ru
+setxkbmap -option 'grp:ctrl_shift_toggle'
+xrandr --output VGA-0 --right-of LVDS
+exec i3
