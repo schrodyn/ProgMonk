@@ -77,17 +77,22 @@ set $workspace3 "3: &#xf02d;"
 set $workspace4 "4: &#xf108;"
 set $workspace5 "5"
 
+
 # switch to workspace
-bindsym $mod+1 workspace $workspace1
-bindsym $mod+2 workspace $workspace2
-bindsym $mod+3 workspace $workspace3
-bindsym $mod+4 workspace $workspace4
-bindsym $mod+5 workspace $workspace5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+
+set $default_bright "set-brightness-param.sh 155"
+set $lower_bright "set-brightness-param.sh 80"
+
+bindsym $mod+1 exec --no-startup-id $default_bright; workspace $workspace1
+bindsym $mod+2 exec --no-startup-id $lower_bright; workspace $workspace2
+bindsym $mod+3 exec --no-startup-id $default_bright; workspace $workspace3
+bindsym $mod+4 exec --no-startup-id $default_bright; workspace $workspace4
+bindsym $mod+5 exec --no-startup-id $default_bright; workspace $workspace5
+bindsym $mod+6 exec --no-startup-id $default_bright; workspace 6
+bindsym $mod+7 exec --no-startup-id $default_bright; workspace 7
+bindsym $mod+8 exec --no-startup-id $default_bright; workspace 8
+bindsym $mod+9 exec --no-startup-id $default_bright; workspace 9
+bindsym $mod+0 exec --no-startup-id $default_bright; workspace 10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workspace1
