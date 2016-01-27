@@ -1,6 +1,8 @@
 set recolor true
-set recolor-darkcolor "#dddddd"
+set recolor-darkcolor "#ffffff"
 set recolor-lightcolor "#2e2e2e"
+
+set font "inconsolata normal 9"
 
 map <C-i> zoom in
 map <C-o> zoom out
