@@ -145,7 +145,7 @@ bindsym $mod+Shift+x exec $HOME/.config/i3/lock.sh
 bindsym F10 exec --no-startup-id increase-brightness.sh
 bindsym F9 exec --no-startup-id decrease-brightness.sh
 
-exec_always --no-startup-id feh --bg-scale /home/mind/pictures/Ama-Dablam-Himalaya.jpg
+exec_always --no-startup-id feh --bg-scale $HOME/pictures/Ama-Dablam-Himalaya.jpg
 
 #Hide borders
 hide_edge_borders none
