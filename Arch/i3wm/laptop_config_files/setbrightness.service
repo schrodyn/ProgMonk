@@ -1,0 +1,11 @@
+[Unit]
+Description=Set Brightness file permission
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/set-brightness.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
