@@ -73,15 +73,15 @@ bindsym $mod+p focus parent
 
 set $workspace1 "1: &#xf120;" 
 set $workspace2 "2: &#xf268;"
-set $workspace3 "3: &#xf02d;"
-set $workspace4 "4: &#xf108;"
+set $workspace3 "3: &#xf108;"
+set $workspace4 "4: &#xf02d;"
 set $workspace5 "5"
 
 
 # switch to workspace
 
 set $default_bright "set-brightness-param.sh 105"
-set $lower_bright "set-brightness-param.sh 67"
+set $lower_bright "set-brightness-param.sh 42"
 
 workspace_auto_back_and_forth yes
 
