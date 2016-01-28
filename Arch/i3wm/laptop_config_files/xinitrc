@@ -1,3 +1,4 @@
 xrdb ~/.Xresources
 setxkbmap -layout us,ru -option grp:ctrl_alt_toggle
+xflux -l 55.7500 -g 37.6167
 exec i3
