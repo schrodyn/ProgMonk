@@ -517,7 +517,7 @@ happen is with color, as the following improvement to the QUAD1.C program demons
 *quad2.c*
 
 ```c
-nclude <ncurses.h>
+#include <ncurses.h>
 #include <stdlib.h>
 
 void bomb(void);
@@ -583,4 +583,53 @@ moving on in color.
 The program defines four colors pairs, each of which is assigned to a 
 specific window via the `wbkgd()` function.
 
+#Rot 13 Cycle
+
+Now we write a program that creates two side-by-side windows that fill 
+the screen. As you type in the first window, text also appears in the 
+second window but with the rot13 filter applied. (Rot13 is a simple 
+cipher where A and N are swapped, B and O, C and P, and so on for the 
+26 letters of the alphabet.)
+
+*rot13.c*
+
+```c
+#include <ncurses.h>
+
+int rot(int ch){
+    return ('a'+((ch-'a')+13)%26);
+}
+
+int main(void)
+{
+    WINDOW *one, *two;
+    int maxy, maxx, halfy, ch;   
+
+    initscr();
+    refresh();
+
+    getmaxyx(stdscr, maxy, maxx);
+    halfy = maxy >> 1;
+
+    one = newwin(halfy, maxx, 0, 0);
+    two = newwin(halfy, maxx, halfy, 0);
+
+    waddstr(one, "Window 1\n");
+    wrefresh(one);
+    waddstr(two, "Window 2\n");
+    wrefresh(two);
+
+    noecho();
+    do{
+        ch = getch();
+        waddch(one, ch);
+        wrefresh(one);
+        waddch(two, rot(ch));
+        wrefresh(two);
+    }while(ch != '~');
+
+    endwin();
+    return 0;
+}
+```
 
