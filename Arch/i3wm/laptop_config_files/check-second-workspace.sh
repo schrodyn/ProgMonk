@@ -5,11 +5,12 @@ script="
 import json,sys
 r=json.load(sys.stdin);
 for workspace in r:
-	if workspace['num'] == 2:
+	if workspace['name'].startswith('2:'):
 		if workspace['visible']:
 			print 1
 		else:
 			print 0
-		sys.exit(0)"
+		sys.exit(0)
+print 0"
 
 echo $workspaces | python2 -c "$script"
