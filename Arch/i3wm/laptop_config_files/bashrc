@@ -32,7 +32,7 @@ mvtrash() {
 
 myip() {
 	ipinfojson=$(curl ipinfo.io 2> /dev/null)
-	script='import json,sys;r=json.load(sys.stdin);[print("{}:{}".format(key,r[key])) for key in ("ip","hostname","city","region","country","loc","org")]'
+	script='import json,sys;r=json.load(sys.stdin);[print("{}:{}".format(key,r.get(key, None))) for key in ("ip","hostname","city","region","country","loc","org")]'
 	echo $ipinfojson | python -c "$script"
 }
 
