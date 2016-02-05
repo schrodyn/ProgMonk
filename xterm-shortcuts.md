@@ -17,8 +17,7 @@ Ctrl-p			| same as up arrow
 Keyboard Commands	| Function
 -----------------|-------------
 Ctrl-d		| deletes characters to the right of cursor, if no characters,logs out and closes terminal
-Ctrl-w		| clears word before the cursor. a word is set of characters 
-separated by spaces
+Ctrl-w		| clears word before the cursor. a word is set of characters separated by spaces
 Ctrl-k		| clear all characters after the cursor
 Ctrl-u		| clear all characters before the cursor
 Ctrl-l		| clear screen
