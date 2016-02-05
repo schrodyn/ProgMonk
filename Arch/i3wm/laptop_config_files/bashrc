@@ -40,3 +40,4 @@ alias lstrash='ls ~/.Trash'
 alias xcopy='xclip -i'
 alias xpaste='xclip -o'
 
+stty -ixon

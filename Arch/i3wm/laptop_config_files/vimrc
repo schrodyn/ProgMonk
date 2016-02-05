@@ -15,3 +15,8 @@ set shiftwidth=4
 
 "curle brace autocompletion
 autocmd FileType c,cpp,java,sh inoremap {<CR>  {<CR><CR>}
+
+"To save, ctrl-s
+nmap <C-s> :w<CR>
+imap <C-s> <Esc>:w<CR>a
+
