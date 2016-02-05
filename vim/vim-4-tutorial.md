@@ -77,3 +77,10 @@ Press `v` to start the visual mode, and press `ap` to select 'a' 'p'aragraph. Pr
 Other text object mnemonics are `aw` which means 'a' 'w'ord, a" means a 
 quoted string (like "this is a quoted string"), ab means 'a' 'b'lock which
 means anything within a pair of parentheses, and so on.
+
+##Move to the beginning of line while in Insert mode
+
+`Ctrl+O` whilst in insert mode puts you in command mode for one key 
+press only. Therefore `Ctrl+O` then `Shift+I` should accomplish what you're looking for.
+
+
