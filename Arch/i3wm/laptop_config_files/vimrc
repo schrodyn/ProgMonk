@@ -20,3 +20,4 @@ autocmd FileType c,cpp,java,sh inoremap {<CR>  {<CR><CR>}
 nmap <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>a
 
+nmap # <Home>
