@@ -36,6 +36,14 @@ myip() {
 	echo $ipinfojson | python -c "$script"
 }
 
+sus() {
+	echo "systemctl suspend" 
+}
+
+poff() {
+	echo "systemctl poweroff"
+}
+
 alias lstrash='ls ~/.Trash'
 alias xcopy='xclip -i'
 alias xpaste='xclip -o'
