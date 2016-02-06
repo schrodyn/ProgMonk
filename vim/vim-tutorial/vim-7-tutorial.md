@@ -60,3 +60,60 @@ inoremap <C-k> <C-P>
 inoremap <C-j> <C-N>
 ```
 
+##Don't type it twice
+
+There is a limited set of words we type. And even a limited number of 
+phrases and sentences. Especially in computer programs.  Obviously, 
+you don't want to type the same thing twice.
+
+Very often you will want to change one word into another. If this is 
+to be done in the whole file, you can use the `:s` (substitute) 
+command. If only a few locations needs changing, a quick method is to 
+use the `*` command to find the next occurrence of the word and use 
+`cw` to change the word. Then type `n` to find the next word and `.`
+(dot) to repeat the `cw` command.
+
+The `.` command repeats the last change. A change, in this context, is 
+inserting, deleting or replacing text. Being able to repeat this is a 
+very powerful mechanism. If you organise your editing around it, many 
+changes will become a matter of hitting just that `.` key. 
+
+When you are typing a phrase or sentence multiple times, there is an 
+even quicker approach. Vim has a mechanism to record a macro. You type 
+`qa` to start recording into register 'a'. Then you type your commands 
+as usual and finally hit `q` again to stop recording. When you want to 
+repeat the recorded commands you type `@a`. There are 26 registers 
+available for this.
+
+With recording you can repeat many different actions, not just 
+inserting text. Keep this is mind when you know you are going to 
+repeat something.
+
+##Fix it when it's wrong
+
+It's normal to make errors while typing. Nobody can avoid it. 
+The trick is to quickly spot and correct them. The editor should be 
+able to help you with this. But you need to tell it what's wrong and 
+what's right.
+
+Very often you will make the same mistake again and again. Your 
+fingers just don't do what you intended. This can be corrected with 
+abbreviations. A few examples:
+
+```
+:abbr Lunix Linux
+:abbr accross across
+:abbr hte the
+```
+
+The words will be automatically corrected just after you typed them.
+
+The same mechanism can be used to type a long word with just a few 
+characters. Especially useful for words that you find hard to type, 
+and it avoids that you type them wrong. Examples:
+
+```
+:abbr pn penguin
+:abbr MS Mandrake Software
+```
+
