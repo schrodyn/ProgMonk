@@ -1,11 +1,15 @@
 syntax on
 colorscheme vendetta
 
+set number
+set numberwidth=3
+
 " the width of a TAB is set to 4.
 " Still it is a \t. It is just that
 " Vim will interpret it to be having
 " a width of 4
 set tabstop=4
+set noexpandtab
 
 "Indents will have a width of 4
 set shiftwidth=4
@@ -13,11 +17,40 @@ set shiftwidth=4
 "Expand TABs to spaces
 "set expandtab
 
+
 "curle brace autocompletion
-autocmd FileType c,cpp,java,sh inoremap {<CR>  {<CR><CR>}
+autocmd FileType c,cpp,java,sh inoremap {<CR>  {<CR><CR>}<up>
+autocmd FileType c,cpp,java,sh inoremap () ()
+autocmd FileType c,cpp,java,sh inoremap ( ()<left>
+
+set autoindent
 
 "To save, ctrl-s
 nmap <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>a
 
 nmap # <Home>
+
+vmap v <Esc>
+
+nmap J :tabp<CR> 
+nmap K :tabn<CR>
+nmap <C-t> :tabnew<CR>
+
+nmap O O<Esc>
+
+map B w
+
+imap jk <Esc><right>
+imap kj <Esc><right>
+
+autocmd InsertEnter * set timeoutlen=300
+autocmd InsertLeave * set timeoutlen=1000
+
+" Ignore case when searching.
+set ignorecase
+
+inoremap <C-k> <C-P>
+inoremap <C-j> <C-N>
+
+nmap <up> 30k
+nmap <down> 30j
