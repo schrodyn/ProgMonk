@@ -44,7 +44,7 @@ map B w
 imap jk <Esc><right>
 imap kj <Esc><right>
 
-autocmd InsertEnter * set timeoutlen=300
+autocmd InsertEnter * set timeoutlen=700
 autocmd InsertLeave * set timeoutlen=1000
 
 " Ignore case when searching.
@@ -57,3 +57,14 @@ nmap <up> 30k
 nmap <down> 30j
 
 vmap <C-c> "+y
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+      set norelativenumber
+  else
+	  set relativenumber
+  endif
+endfunc
+
+nnoremap nt :call NumberToggle()<cr>
+
