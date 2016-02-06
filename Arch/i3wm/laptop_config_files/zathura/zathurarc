@@ -14,3 +14,4 @@ set scroll-step 80
 map <C-y> scroll half-down
 map <C-u> scroll half-up
 
+set selection-clipboard clipboard
