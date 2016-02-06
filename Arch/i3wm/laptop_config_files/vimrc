@@ -26,8 +26,6 @@ autocmd FileType c,cpp,java,sh inoremap () ()
 autocmd FileType c,cpp,java,sh inoremap ( ()<left>
 
 
-"To save, ctrl-s
-nmap <C-s> :w<CR>
 
 nmap # <Home>
 
@@ -56,8 +54,6 @@ inoremap <C-j> <C-N>
 nmap <up> 30k
 nmap <down> 30j
 
-vmap <C-c> "+y
-
 function! NumberToggle()
   if(&relativenumber == 1)
       set norelativenumber
@@ -68,3 +64,12 @@ endfunc
 
 nnoremap nt :call NumberToggle()<cr>
 
+let mapleader = "\<Space>"
+nnoremap <Leader>w :w<CR>
+
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+
+nnoremap <CR> G
+nnoremap <BS> gg
