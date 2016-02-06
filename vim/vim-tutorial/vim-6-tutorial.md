@@ -41,7 +41,7 @@ opposite direction i.e. the previous
 't'ab.
 
 I personally prefer to use the keys
-ctrl-h and ctrl-l for the same
+`ctrl-h` and `ctrl-l` for the same
 operations analogous to how the `h`
 and `l` keys work for characters.
 To enable this, add the following lines to
@@ -49,9 +49,9 @@ your vimrc file:
 
 ```
 " Shortcuts for moving between tabs.
-" Ctrl-j to move to the tab to the left
+" Ctrl-h to move to the tab to the left
 noremap <C-h> gT
-" Ctrl-k to move to the tab to the right
+" Ctrl-l to move to the tab to the right
 noremap <C-l> gt
 ```
 
