@@ -54,3 +54,5 @@ inoremap <C-j> <C-N>
 
 nmap <up> 30k
 nmap <down> 30j
+
+vmap <C-c> "+y
