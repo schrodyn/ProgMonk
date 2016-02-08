@@ -73,3 +73,6 @@ nmap <Leader>p "+p
 
 nnoremap <CR> G
 nnoremap <BS> gg
+
+nnoremap nl i<CR><Esc>
+nnoremap ln i<CR><Esc>
