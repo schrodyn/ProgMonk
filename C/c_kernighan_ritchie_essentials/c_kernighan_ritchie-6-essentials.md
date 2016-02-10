@@ -389,4 +389,186 @@ value on, leaving error-handling to its caller.
 Storage obtained by calling `malloc` may be freed for re-use by 
 calling `free`.
 
+#Typedef
+
+C provides a facility called `typedef` for creating new data type 
+names. For example, the declaration
+
+```c
+typedef int Length;
+```
+
+makes the name `Length` a synonym for `int`. The type `Length` can be 
+used in declarations, casts, etc., in exactly the same ways that the 
+`int` type can be:
+
+```c
+Length len, maxlen;
+Length *lengths[];
+```
+
+Similarly, the declaration
+
+```c
+typedef char *String;
+```
+
+makes `String` a synonym for `char *` or character pointer, which may 
+then be used in declarations and casts:
+
+```c
+String p, lineptr[MAXLINES], alloc(int);
+int strcmp(String, String);
+p = (String) malloc(100);
+```
+
+Notice that the type being declared in a `typedef` appears in the 
+position of a variable name, not right after the word `typedef`.
+
+As a more complicated example, we could make `typedef`s for the tree 
+nodes shown earlier in this chapter:
+
+```c
+typedef struct tnode *Treeptr;
+
+typedef struct tnode { /* the tree node: */
+	char *word;           /* points to the text */
+	int count;            /* number of occurrences */
+	struct tnode *left;   /* left child */
+	struct tnode *right;  /* right child */
+} Treenode;
+```
+
+This creates two new type keywords called `Treenode` (a structure) and
+`Treeptr` (a pointer to the structure). Then the routine `talloc` 
+could become
+
+```c
+Treeptr talloc(void)
+{
+	return (Treeptr) malloc(sizeof(Treenode));
+}
+```
+
+It must be emphasized that a `typedef` declaration does not create a 
+new type in any sense; it merely adds a new name for some existing 
+type. Nor are there any new semantics: variables declared this way 
+have exactly the same properties as variables whose declarations are 
+spelled out explicitly. 
+
+In effect, `typedef` is like `#define`, except that since it is 
+interpreted by the compiler, it can cope with textual substitutions 
+that are beyond the capabilities of the preprocessor.
+
+For example,
+
+```c
+typedef int (*PFI)(char *, char *);
+```
+
+creates the type `PFI`, for "pointer to function (of two `char *` 
+arguments) returning `int`," which can be used in contexts like
+
+```c
+PFI strcmp, numcmp;
+```
+
+#Unions
+
+A *union* is a variable that may hold (at different times) objects of 
+different types and sizes, with the compiler keeping track of size and
+alignment requirements. Unions provide a way to manipulate different 
+kinds of data in a single area of storage, without embedding any 
+machine-dependent information in the program.
+
+As an example such as might be found in a compiler symbol table 
+manager, suppose that a constant may be an `int`, a `float`, or a 
+character pointer. The value of a particular constant must be stored 
+in a variable of the proper type, yet it is most convenient for table 
+management if the value occupies the same amount of storage and is 
+stored in the same place regardless of its type. This is the purpose 
+of a union - a single variable that can legitimately hold any of one 
+of several types. The syntax is based on structures:
+
+```c
+union u_tag {
+	int ival;
+	float fval;
+	char *sval;
+} u;
+```
+
+The variable `u` will be large enough to hold the largest of the three
+types; the specific size is implementation-dependent.
+
+Any of these types may be assigned to `u` and then used in expressions
+, so long as the usage is consistent. It is the programmer's 
+responsibility to keep track of which type is currently stored in a 
+union; the results are implementation-dependent if something is stored
+as one type and extracted as another.
+
+Syntactically, members of a union are accessed as
+
+```c
+union-name.member
+```
+
+or
+
+```c
+union-pointer->member
+```
+
+just as for structures. If the variable `utype` is used to keep track 
+of the current type stored in `u`, then one might see code such as
+
+```c
+if (utype == INT)
+	printf("%d\n", u.ival);
+if (utype == FLOAT)
+	printf("%f\n", u.fval);
+if (utype == STRING)
+	printf("%s\n", u.sval);
+else
+	printf("bad type %d in utype\n", utype);
+```
+
+Unions may occur within structures and arrays, and vice versa. The 
+notation for accessing a member of a union in a structure (or vice 
+versa) is identical to that for nested structures. For example, in the
+structure array defined by
+
+```c
+struct {
+	char *name;
+	int flags;
+	int utype;
+	union {
+		int ival;
+		float fval;
+		char *sval;
+	} u;
+} symtab[NSYM];
+```
+
+the member `ival` is referred to as
+
+```c
+symtab[i].u.ival
+```
+
+and the first character of the string `sval` by either of
+
+```c
+*symtab[i].u.sval
+symtab[i].u.sval[0]
+```
+
+The same operations are permitted on unions as on structures: 
+assignment to or copying as a unit, taking the address, and accessing 
+a member.
+
+A union may only be initialized with a value of the type of its 
+**first** member; thus union `u` described above can only be 
+initialized with an integer value.
 
