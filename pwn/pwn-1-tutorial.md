@@ -34,7 +34,7 @@ rewrite an operating system to play space travel on this smaller
 machine (a DEC PDP-7 [Programmed Data Processor 4K memory for user 
 programs]).
 
-[here image]
+![](/pwn/images/pdp7.jpeg)
 
 On the PDP-7, in 1969, a team of Bell Labs researchers led by Thompson 
 and Ritchie, including Rudd Canaday, developed a hierarchical file 
@@ -56,7 +56,7 @@ All were written in PDP-11/20 assembly language.
 For the first time in 1970, the Unix operating system was officially 
 named and ran on the PDP-11/20.
 
-[here image]
+![](/pwn/images/kd.jpg)
 
 First official edition of Unix was released 11/03/1971.
 The main thing missing was pipes.
