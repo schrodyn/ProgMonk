@@ -36,6 +36,8 @@ programs]).
 
 ![](/pwn/images/pdp7.jpeg)
 
+**PDP-7**
+
 On the PDP-7, in 1969, a team of Bell Labs researchers led by Thompson 
 and Ritchie, including Rudd Canaday, developed a hierarchical file 
 system, the concepts of *computer processes* and *device files*, a 
@@ -57,6 +59,8 @@ For the first time in 1970, the Unix operating system was officially
 named and ran on the PDP-11/20.
 
 ![](/pwn/images/kd.jpg)
+
+**Ken (seated) and Dennis (standing) at a PDP-11**
 
 First official edition of Unix was released 11/03/1971.
 The main thing missing was pipes.
