@@ -177,3 +177,5 @@ bindsym $mod+F11 exec --no-startup-id scrot ~/pictures/screens/screen-%Y-%m-%d-%
 bindsym $mod+Shift+F11 exec --no-startup-id scrot -u ~/pictures/screens/screen-%Y-%m-%d-%H:%M:%S.png
 
 bindsym $mod+Shift+F exec --no-startup-id xterm -e 'ranger'
+
+bindsym $mod+Tab workspace back_and_forth
