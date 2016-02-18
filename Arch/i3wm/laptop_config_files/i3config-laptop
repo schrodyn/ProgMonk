@@ -9,7 +9,7 @@ font pango:Droid Sans 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id xterm -fa 'inconsolata' -fs 13
+bindsym $mod+Return exec --no-startup-id xterm -fa 'inconsolatalgc' -fs 11
 
 # kill focused window
 bindsym $mod+Shift+q kill
