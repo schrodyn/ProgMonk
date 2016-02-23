@@ -49,3 +49,5 @@ alias xcopy='xclip -i'
 alias xpaste='xclip -o'
 
 stty -ixon
+
+alias setps='export PS1="$ "; export PS2="-> "'
