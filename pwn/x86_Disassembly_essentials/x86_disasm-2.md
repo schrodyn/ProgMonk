@@ -269,6 +269,12 @@ The file data can include:
   * Data referred to by entries in the program or section header 
   table
 
+[here image]
+
+An ELF file has two views: the program header shows the *segments* 
+used at run-time, while the section header lists the set of *sections*
+of the binary.
+
 The **segments** contain information that is necessary for *runtime 
 execution* of the file, while **sections** contain important data for 
 *linking* and *relocation*. Each byte in the entire file is taken by 
