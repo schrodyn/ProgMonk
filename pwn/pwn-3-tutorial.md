@@ -120,7 +120,7 @@ The `size(1)` command reports the sizes (in bytes) of the `text`,
 `data`, and `bss` segments. ( for more details please refer man page 
 of `size(1)` )
 
-1. Check the following simple C program
+1\. Check the following simple C program
 
 ```c
 #include <stdio.h>
@@ -138,7 +138,7 @@ int main(void)
    1099     544       8    1651     673 memory-layout
 ```
 
-2. Let us add one global variable in program, now check the size of 
+2\. Let us add one global variable in program, now check the size of 
 `bss` (highlighted in red color).
 
 ```c
@@ -159,7 +159,7 @@ int main(void)
    1099     544      16    1659     67b memory-layout
 ```
 
-3. Let us add one static variable which is also stored in `bss`.
+3\. Let us add one static variable which is also stored in `bss`.
 
 ```c
 #include <stdio.h>
@@ -180,7 +180,7 @@ int main(void)
    1099     544      24    1667     683 memory-layout
 ```
 
-4. Let us initialize the static variable which will then be stored in 
+4\. Let us initialize the static variable which will then be stored in 
 Data Segment (DS)
 
 ```c
@@ -202,7 +202,7 @@ int main(void)
    1099     552      16    1667     683 memory-layout
 ```
 
-5. Let us initialize the global variable which will then be stored in 
+5\. Let us initialize the global variable which will then be stored in 
 Data Segment (DS)
 
 ```c
