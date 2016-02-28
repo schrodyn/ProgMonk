@@ -82,6 +82,7 @@ set $workspace5 "5: &#xf04b;"
 
 set $default_bright "set-brightness-param.sh 105"
 set $lower_bright "set-brightness-param.sh 42"
+set $middle_bright "set-brightness-param.sh 67"
 
 #workspace_auto_back_and_forth yes
 
@@ -91,7 +92,7 @@ bindsym $mod+1 workspace $workspace1; exec --no-startup-id $default_bright
 bindsym $mod+2 workspace $workspace2; exec --no-startup-id $lower_bright
 bindsym $mod+3 workspace $workspace3; exec --no-startup-id $default_bright 
 bindsym $mod+4 workspace $workspace4; exec --no-startup-id $default_bright
-bindsym $mod+5 workspace $workspace5; exec --no-startup-id $default_bright
+bindsym $mod+5 workspace $workspace5; exec --no-startup-id $lower_bright
 bindsym $mod+6 workspace 6; exec --no-startup-id $default_bright
 bindsym $mod+7 workspace 7; exec --no-startup-id $default_bright
 bindsym $mod+8 workspace 8; exec --no-startup-id $default_bright
