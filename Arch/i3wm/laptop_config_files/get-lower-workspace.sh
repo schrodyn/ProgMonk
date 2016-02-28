@@ -5,8 +5,9 @@ script="
 import json,sys
 r=json.load(sys.stdin);
 for workspace in r:
-	if workspace['name'].startswith('2:'):
-		if workspace['visible']:
+	if workspace['visible']:
+		if workspace['name'].startswith('2:') or \
+		   workspace['name'].startswith('5:'):
 			print 1
 		else:
 			print 0
