@@ -1,7 +1,6 @@
 syntax on
 colorscheme vendetta
 
-set autoindent
 
 set number
 set numberwidth=3
@@ -24,7 +23,7 @@ set shiftwidth=4
 autocmd FileType c,cpp,java,sh inoremap {<CR>  {<CR><CR>}<up>
 autocmd FileType c,cpp,java,sh inoremap () ()
 autocmd FileType c,cpp,java,sh inoremap ( ()<left>
-
+autocmd FileType c,cpp,java,sh set autoindent
 
 
 nmap # <Home>
