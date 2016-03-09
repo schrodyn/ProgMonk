@@ -114,6 +114,12 @@ calls defined?
 vim /usr/include/i386-linux-gnu/asm/unistd_32.h
 ```
 
+**Note** in Arch Linux
+
+```
+vim /usr/include/asm/unistd_32.h
+```
+
 And remember if you are using different system the location could be
 different.
 
