@@ -62,7 +62,7 @@ Connection=wireless
 ESSID='$SSID'
 EOF
 
-if [ -n $PASSWD ]
+if [[ -n $PASSWD ]]
 then
 	echo "Security=wpa" >> $config_file
 	echo "Key='$PASSWD'" >> $config_file
@@ -72,4 +72,6 @@ fi
 
 echo "IP=dhcp" >> $config_file
 
-mv "$config_file" "/etc/netctl/"
+ip link set dev $INTERFACE down
+
+#mv "$config_file" "/etc/netctl/"
