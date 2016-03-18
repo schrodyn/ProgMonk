@@ -1,3 +1,8 @@
-#allow all files with extensions
-!*.*
+*.ko
 *.o
+*.mod.c
+*.mod.o
+*.order
+*.symvers
+*.cmd
+*.mod
