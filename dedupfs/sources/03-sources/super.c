@@ -1,11 +1,11 @@
 #include <linux/init.h>
 #include <linux/module.h>
+#include <linux/fs.h>
 
 #define DEDUPFS_MAGIC_NUMBER 0x25252516
 
-static struct inode *dedufs_get_inode(struct super_block *sb,
-									  const struct inode *dir, umode_t mode,
-									  dev_t dev)
+static struct inode *dedupfs_get_inode(struct super_block *sb,
+									  const struct inode *dir, umode_t mode)
 {
 	struct inode *inode = new_inode(sb);
 
@@ -19,8 +19,9 @@ static struct inode *dedufs_get_inode(struct super_block *sb,
 			case S_IFDIR:
 				/* for "." entry */
 				inc_nlink(inode);
+				break;
 			case S_IFREG:
-			case S_IFLINK:
+			case S_IFLNK:
 			default:
 				printk(KERN_ERR
 						"dedupfs can create meaningful inode only for root directory at the moment\n");
@@ -39,10 +40,10 @@ static int dedupfs_fill_superblock(struct super_block *sb, void *data,
 	/* A magic number that uniquely identifies our filesystem type */
 	sb->s_magic = DEDUPFS_MAGIC_NUMBER;
 
-	root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR, 0);
+	root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR);
 	sb->s_root = d_make_root(root_inode);
 	if(!sb->s_root) {
-		printk(KERN_ERR "root creation failed");
+		printk(KERN_ERR "root creation failed\n");
 		return -ENOMEM;
 	}
 
@@ -59,16 +60,16 @@ static struct dentry *dedupfs_mount(struct file_system_type *fs_type,
 	ret = mount_bdev(fs_type, flags, dev_name, data, dedupfs_fill_superblock);
 
 	if(IS_ERR(ret))
-		printk(KERN_ERR "Error mounting dedupfs");
+		printk(KERN_ERR "Error mounting dedupfs\n");
 	else
-		printk(KERN_INFO "dedupfs is succesfully mounted on [%s]",
+		printk(KERN_INFO "dedupfs is succesfully mounted on [%s]\n",
 				dev_name);
 
 	return ret;
 
 }
 
-static void simplefs_kill_superblock(struct super_block *sb)
+static void dedupfs_kill_superblock(struct super_block *sb)
 {
 	printk(KERN_INFO
 			"dedupfs superblock is destroyed. Unmount succesful.\n");
@@ -79,7 +80,7 @@ static struct file_system_type dedupfs_fs_type = {
 	.name = "dedupfs",
 	.mount = dedupfs_mount,
 	.kill_sb = dedupfs_kill_superblock,
-}
+};
 
 static int __init dedupfs_init(void)
 {
@@ -89,7 +90,7 @@ static int __init dedupfs_init(void)
 	if(ret == 0)
 		printk(KERN_INFO "Succesfully registered dedupfs\n");
 	else
-		printk(KERN_ERR "Failed to register dedupfs. Error:[%d]", 
+		printk(KERN_ERR "Failed to register dedupfs. Error:[%d]\n", 
 				ret);
 
 	return ret;

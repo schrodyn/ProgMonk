@@ -21,7 +21,7 @@ static struct file_system_type dedupfs_fs_type = {
 	.name = "dedupfs",
 	.mount = dedupfs_mount,
 	.kill_sb = dedupfs_kill_superblock,
-}
+};
 ```
 First of all, we are interested in `name` field, it holds the name of
 our filesystem, and exactly this name will be used while mounting.
@@ -87,7 +87,7 @@ static int dedupfs_fill_superblock(struct super_block *sb, void *data,
 	/* A magic number that uniquely identifies our filesystem type */
 	sb->s_magic = DEDUPFS_MAGIC_NUMBER;
 
-	root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR, 0);
+	root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR);
 	sb->s_root = d_make_root(root_inode);
 	if(!sb->s_root)
 		return -ENOMEM;
@@ -107,7 +107,7 @@ is exactly this filesystem on the disk.
 First of all, we allocate new inode
 
 ```c
-root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR, 0);
+root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR);
 ```
 
 and in this line
@@ -120,13 +120,12 @@ we create `dentry` linked with root `inode`.
 
 `dedupfs_get_inode` creates, configures and returns an `inode`,
 for the asked file (or) directory (differentiated by the `mode` 
-param), under the directory specified by the `dir` param
-on the device `dev`, managed by the superblock `sb` param)
+param), under the directory specified by the `dir` param, managed 
+by the superblock `sb` param)
 
 ```c
-static struct inode *dedufs_get_inode(struct super_block *sb,
-									  const struct inode *dir, umode_t mode,
-									  dev_t dev)
+static struct inode *dedupfs_get_inode(struct super_block *sb,
+									  const struct inode *dir, umode_t mode)
 {
 	struct inode *inode = new_inode(sb);
 
@@ -140,8 +139,9 @@ static struct inode *dedufs_get_inode(struct super_block *sb,
 			case S_IFDIR:
 				/* for "." entry */
 				inc_nlink(inode);
+				break;
 			case S_IFREG:
-			case S_IFLINK:
+			case S_IFLNK:
 			default:
 				printk(KERN_ERR
 						"dedupfs can create meaningful inode only for root directory at the moment\n");
@@ -184,7 +184,7 @@ switch(mode & S_IFMT) {
 filesystem gets matured, we will do more meaningful operations here
 
 ```c
-static void simplefs_kill_superblock(struct super_block *sb)
+static void dedupfs_kill_superblock(struct super_block *sb)
 {
 	printk(KERN_INFO
 			"dedupfs superblock is destroyed. Unmount succesful.\n");
