@@ -8,7 +8,7 @@ mkdir mount
 ##Mounting
 
 ```
-$ make
+# make
 # insmod dedupfs.ko
 # mount -o loop -t dedupfs image mount/
 $ dmesg
