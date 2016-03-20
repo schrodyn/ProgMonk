@@ -4,6 +4,28 @@
 
 #define DEDUPFS_MAGIC_NUMBER 0x25252516
 
+static int dedupfs_iterate(struct file *filp,
+						   struct dir_context *ctx)
+{
+	return 0;
+}
+
+static struct file_operations dedupfs_dir_operations = {
+	.owner = THIS_MODULE,
+	.iterate = dedupfs_iterate,
+};
+
+struct dentry *dedupfs_lookup(struct inode *parent_inode,
+							  struct dentry *child_dentry, 
+							  unsigned int flags)
+{
+	return NULL;
+}
+
+static struct inode_operations dedupfs_inode_ops = {
+	.lookup = dedupfs_lookup,
+};
+
 static struct inode *dedupfs_get_inode(struct super_block *sb,
 									  const struct inode *dir, umode_t mode)
 {
@@ -41,6 +63,9 @@ static int dedupfs_fill_superblock(struct super_block *sb, void *data,
 	sb->s_magic = DEDUPFS_MAGIC_NUMBER;
 
 	root_inode = dedupfs_get_inode(sb, NULL, S_IFDIR);
+	root_inode->i_op = &dedupfs_inode_ops;
+	root_inode->i_fop = &dedupfs_dir_operations;
+
 	sb->s_root = d_make_root(root_inode);
 	if(!sb->s_root) {
 		printk(KERN_ERR "root creation failed\n");
