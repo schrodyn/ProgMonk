@@ -2,7 +2,7 @@
 #include <linux/module.h>
 #include <linux/fs.h>
 
-#define DEDUPFS_MAGIC_NUMBER 0x25252516
+#include "dedupfs-structures.h"
 
 static int dedupfs_iterate(struct file *filp,
 						   struct dir_context *ctx)

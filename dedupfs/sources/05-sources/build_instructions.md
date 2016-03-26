@@ -23,4 +23,11 @@ $ dmesg
 $ dmesg
 ```
 
+##Creating Filesystem
+
+```
+./mkfs-dedupfs ~/image
+```
+
+
 
