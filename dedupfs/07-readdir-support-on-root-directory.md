@@ -197,27 +197,97 @@ static inline struct dedupfs_inode *DEDUPFS_INODE(struct inode *inode)
 ```
 
 ```c
-struct dentry *dedupfs_lookup(struct inode *parent_inode,
-							  struct dentry *child_dentry, 
-							  unsigned int flags)
+static int dedupfs_iterate(struct file *filp,
+						   struct dir_context *ctx)
 {
-	struct dedupfs_inode *parent = DEDUPFS_INODE(parent_inode);
-	struct super_block *sb = parent_inode->i_sb;
+	loff_t pos;
+	struct inode *inode;
+	struct super_block *sb;
 	struct buffer_head *bh;
+	struct dedupfs_inode *dfs_inode;
 	struct dedupfs_file_record *record;
 
-	bh = (struct buffer_head *)sb_bread(sb, parent->data_block_number);
+	pos = ctx->pos;
 
-	record = (struct dedupfs_file_record *) bh->b_data;
-	for(int i = 0; i < parent->dir_children_count; i++) {
-		printk(KERN_INFO "Got filename: %s\n", record->filename);
-		record ++;
+	inode = file_inode(filp);
+	sb = inode->i_sb;
+
+	printk(KERN_INFO
+		"We are inside iterate. The pos[%d], inode_number[%d]\n",
+		pos, inode->i_ino);
+
+
+	dfs_inode = DEDUPFS_INODE(inode);
+
+	if(!S_ISDIR(dfs_inode->mode)) {
+		printk(KERN_ERR
+			   "inode [%d] is not a directory\n",
+			   dfs_inode->inode_no);
+		return -ENOTDIR;
 	}
-	return NULL;
+
+	bh = (struct buffer_head *)sb_bread(sb, dfs_inode->data_block_number);
+
+	record = (struct dedupfs_file_record *)bh->b_data;
+	for(int i = 0; i < dfs_inode->dir_children_count; i++) {
+		printk(KERN_INFO "Got filename: %s\n", record->filename);
+		dir_emit(ctx, record->filename, DEDUPFS_FILENAME_MAXLEN,
+				record->inode_no, DT_UNKNOWN);
+		ctx->pos += sizeof(struct dedupfs_file_record);
+		record++;
+	}
+	brelse(bh);
+
+	return 0;
+
 }
 ```
 
-Finally, we should fill `root_inode` on disk with valid information
+Let's understand what `dedupfs_iterate` makes. First of all,
+`loff_t pos;` will simply contain current offset while reading context
+of directory `struct dir_context *ctx`.
+
+After that we retrieve inode of directory and super block
+
+```c
+	inode = file_inode(filp);
+	sb = inode->i_sb;
+```
+
+Now we go ahead and retrieve our custom inode and check if this inode 
+is really associated with directory
+
+```c
+	dfs_inode = DEDUPFS_INODE(inode);
+
+	if(!S_ISDIR(dfs_inode->mode)) {
+		printk(KERN_ERR
+			   "inode [%d] is not a directory\n",
+			   dfs_inode->inode_no);
+		return -ENOTDIR;
+	}
+```
+
+Finally, we simply iterate over data block which is associated with 
+this directory (`dfs_inode->data_block_number`) and fill directory 
+context `ctx` with pairs `(record->filename, record->inode_no)`
+
+```c
+	bh = (struct buffer_head *)sb_bread(sb, dfs_inode->data_block_number);
+
+	record = (struct dedupfs_file_record *)bh->b_data;
+	for(int i = 0; i < dfs_inode->dir_children_count; i++) {
+		printk(KERN_INFO "Got filename: %s\n", record->filename);
+		dir_emit(ctx, record->filename, DEDUPFS_FILENAME_MAXLEN,
+				record->inode_no, DT_UNKNOWN);
+		ctx->pos += sizeof(struct dedupfs_file_record);
+		record++;
+	}
+	brelse(bh);
+```
+
+
+Also we should fill `root_inode` on disk with valid information
 in `mkfs-dedupfs.c`
 
 ```c

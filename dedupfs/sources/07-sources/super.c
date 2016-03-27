@@ -8,7 +8,45 @@
 static int dedupfs_iterate(struct file *filp,
 						   struct dir_context *ctx)
 {
+	loff_t pos;
+	struct inode *inode;
+	struct super_block *sb;
+	struct buffer_head *bh;
+	struct dedupfs_inode *dfs_inode;
+	struct dedupfs_file_record *record;
+
+	pos = ctx->pos;
+
+	inode = file_inode(filp);
+	sb = inode->i_sb;
+
+	printk(KERN_INFO
+		"We are inside iterate. The pos[%d], inode_number[%d]\n",
+		pos, inode->i_ino);
+
+	dfs_inode = DEDUPFS_INODE(inode);
+
+	if(!S_ISDIR(dfs_inode->mode)) {
+		printk(KERN_ERR
+			   "inode [%d] is not a directory\n",
+			   dfs_inode->inode_no);
+		return -ENOTDIR;
+	}
+
+	bh = (struct buffer_head *)sb_bread(sb, dfs_inode->data_block_number);
+
+	record = (struct dedupfs_file_record *)bh->b_data;
+	for(int i = 0; i < dfs_inode->dir_children_count; i++) {
+		printk(KERN_INFO "Got filename: %s\n", record->filename);
+		dir_emit(ctx, record->filename, DEDUPFS_FILENAME_MAXLEN,
+				record->inode_no, DT_UNKNOWN);
+		ctx->pos += sizeof(struct dedupfs_file_record);
+		record++;
+	}
+	brelse(bh);
+
 	return 0;
+
 }
 
 static struct file_operations dedupfs_dir_operations = {
@@ -20,18 +58,6 @@ struct dentry *dedupfs_lookup(struct inode *parent_inode,
 							  struct dentry *child_dentry, 
 							  unsigned int flags)
 {
-	struct dedupfs_inode *parent = DEDUPFS_INODE(parent_inode);
-	struct super_block *sb = parent_inode->i_sb;
-	struct buffer_head *bh;
-	struct dedupfs_file_record *record;
-
-	bh = (struct buffer_head *)sb_bread(sb, parent->data_block_number);
-
-	record = (struct dedupfs_file_record *) bh->b_data;
-	for(int i = 0; i < parent->dir_children_count; i++) {
-		printk(KERN_INFO "Got filename: %s\n", record->filename);
-		record++;
-	}
 	return NULL;
 }
 
@@ -79,6 +105,8 @@ static int dedupfs_fill_superblock(struct super_block *sb, void *data,
 	bh = (struct buffer_head *)sb_bread(sb, 0);
 
 	sb_disk = (struct dedupfs_super_block *)bh->b_data;
+
+	brelse(bh);
 
 	printk(KERN_INFO "The magic number obtained in disk is: [%d]\n",
 				sb_disk->magic);
