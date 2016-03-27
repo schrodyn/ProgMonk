@@ -21,8 +21,8 @@ static int dedupfs_iterate(struct file *filp,
 	sb = inode->i_sb;
 
 	printk(KERN_INFO
-		"We are inside iterate. The pos[%d], inode_number[%d]\n",
-		pos, inode->i_ino);
+		"We are inside iterate. The pos[%lu], inode_number[%d]\n",
+		(unsigned int)pos, inode->i_ino);
 
 	dfs_inode = DEDUPFS_INODE(inode);
 
