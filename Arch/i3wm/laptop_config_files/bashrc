@@ -51,3 +51,7 @@ alias xpaste='xclip -o'
 stty -ixon
 
 alias setps='export PS1="$ "; export PS2="-> "'
+
+function fixgdb {
+	source fixgdb.sh "$@"
+}
