@@ -50,8 +50,8 @@ set ignorecase
 inoremap <C-k> <C-P>
 inoremap <C-j> <C-N>
 
-nmap <up> 30k
-nmap <down> 30j
+nmap <up> 18k
+nmap <down> 18j
 
 function! NumberToggle()
   if(&relativenumber == 1)
