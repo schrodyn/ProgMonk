@@ -14,15 +14,13 @@ int arr[NMAX];
 */
 void shell_sort_hibbard(int *arr, int n)
 {
-	int j,x,h;
+	int j,h;
 
 	// determine the increment sequence - mersenne numbers (2^x - 1)
-	for(x = 1; pow(2.0, x) - 1 < n; x++);
-	x--;
+	for(h = 1; h < n; h = (h+1)*2 - 1);	
+	h = (h+1)/2 - 1;
 	
-	while(x > 0) {
-		
-		h = pow(2.0, x) - 1;
+	while(h > 0) {
 
 		for(int i = h; i < n; i++) {
 			
@@ -33,7 +31,7 @@ void shell_sort_hibbard(int *arr, int n)
 			}
 			arr[j] = tmp;
 		}
-		x--;
+		h = (h+1)/2 - 1;
 	}
 }
 /*
@@ -48,6 +46,7 @@ void shell_sort_knuth(int *arr, int n)
 	h/=3;
 
 	while(h > 0) {
+
 		for(int i = h; i < n; i++) {
 
 			int tmp = arr[i];
@@ -69,11 +68,10 @@ int main()
 	for(int i = 0; i < n; i++)
 		scanf("%d", &arr[i]);
 	
-	shell_sort_knuth(arr, n);
+	shell_sort_hibbard(arr, n);
 
 	for(int i = 0; i < n; i++)
 		printf("%d ", arr[i]);
 	printf("\n");
 }
-
 
