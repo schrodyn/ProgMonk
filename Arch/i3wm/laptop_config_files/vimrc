@@ -1,6 +1,103 @@
+
+set nobackup
+set nowritebackup
+
+set encoding=utf-8
+
+"enable mouse
+set mouse=a
+
+"Vundle
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/plugins/Vundle.vim
+call vundle#begin('~/.vim/plugins/')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" added nerdtree
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+
+" syntax checking hacks for vim
+"Plugin 'scrooloose/syntastic'
+
+" vim-misc is a dependency of vim-easytags
+Plugin 'xolox/vim-misc'
+" vim-easytags is a plugin that generates tags files, which is a 
+" compiled index of all the functions, variables, and identifies
+Plugin 'xolox/vim-easytags'
+"tagbar is a plugin that reads your tags files and displays the 
+"information in an accessible way inside Vim.
+Plugin 'majutsushi/tagbar'
+
+"Full path fuzzy file, buffer, mru, tag, ... finder for Vim
+Plugin 'ctrlpvim/ctrlp.vim'
+
+"Alternate Files quickly (.c --> .h etc)
+"Plugin 'vim-scripts/a.vim'
+
+"Vim plugin that use clang for completing C/C++ code.
+Plugin 'Rip-Rip/clang_complete'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+nmap <silent> NT :NERDTreeToggle<CR>
+:autocmd FileType nerdtree nmap <buffer> <CR> go
+
+" ----- xolox/vim-easytags settings -----
+" Where to look for tags files
+set tags=~/.vimtags
+" Sensible defaults
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+let g:easytags_async = 1
+let g:easytags_dynamic_files = 2
+let g:easytags_resolve_links = 1
+let g:easytags_suppress_ctags_warning = 1
+
+" ----- xolox/vim-easytags settings end -----
+
+" ----- majutsushi/tagbar settings -----
+" Open/close tagbar
+nmap <silent> <C-\> :TagbarToggle<CR>
+
+nnoremap <silent> <C-H> :wincmd h<CR>
+nnoremap <silent> <C-L> :wincmd l<CR> 
+
+let g:tagbar_autofocus = 1
+" ----- majutsushi/tagbar settings end -----
+
+
+" ----- ctrlpvim/ctrlp.vim settings -----
+
+let g:ctrlp_working_path_mode = 'rw'
+"
+" ----- ctrlpvim/ctrlp.vim settings end -----
+
+" ----- clang_complete settings -----
+let g:clang_use_library = 1
+
+"disable clang_completion on . and ->
+let g:clang_complete_auto=0
+
+" change mapping so that control space does user supplied completion
+inoremap <expr> <C-n> "\<C-x>\<C-u>"
+
+" Complete options (disable preview scratch window, longest removed to aways show menu)
+set completeopt=menu,menuone
+
+" Limit popup menu height
+set pumheight=20
+
+" ----- clang_complete settings end -----
+
 syntax on
 colorscheme vendetta
-
 
 set number
 set numberwidth=3
@@ -30,9 +127,13 @@ nmap # <Home>
 
 vmap v <Esc>
 
-nmap J :tabp<CR> 
-nmap K :tabn<CR>
+nmap J :tabn<CR> 
+nmap K :tabp<CR>
 nmap <C-t> :tabnew<CR>
+nmap <tab> :bnext<CR>
+nmap <S-tab> :bprev<CR>
+nnoremap <C-w> :tabclose<CR>
+nnoremap <C-d> :bd<CR>
 
 nmap O O<Esc>
 
