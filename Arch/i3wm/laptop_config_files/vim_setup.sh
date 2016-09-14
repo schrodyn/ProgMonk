@@ -12,3 +12,6 @@ curl https://raw.githubusercontent.com/Flynston/ProgMonk/master/Arch/i3wm/laptop
 echo "setup color scheme config..."
 mkdir -p $HOME/.vim/colors
 curl https://raw.githubusercontent.com/Flynston/ProgMonk/master/Arch/i3wm/laptop_config_files/vim/colors/vendetta.vim > $HOME/.vim/colors/vendetta.vim
+
+echo "install Vim plugins..."
+vim +PluginInstall +qall
