@@ -9,7 +9,7 @@ font pango:Droid Sans 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id xterm -fa 'Monospace' -fs 11
+bindsym $mod+Return exec --no-startup-id xterm -fa 'Monospace' -fs 14
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -75,7 +75,13 @@ set $workspace1 "1: &#xf120;"
 set $workspace2 "2: &#xf268;"
 set $workspace3 "3: &#xf108;"
 set $workspace4 "4: &#xf02d;"
-set $workspace5 "5"
+set $workspace5 "5: &#xf04b;"
+set $workspace6 "6: &#xf1b2;" 
+set $workspace7 "7"
+set $workspace8 "8"
+set $workspace9 "9"
+set $workspace10 "10: &#xf001;"
+
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -83,11 +89,11 @@ bindsym $mod+2 workspace $workspace2
 bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace $workspace5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
+bindsym $mod+9 workspace $workspace9
+bindsym $mod+0 workspace $workspace10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workspace1
@@ -171,6 +177,7 @@ client.urgent             #2f343a #900000 #ffffff #900000
 
 assign [class="chromium"] $workspace2
 assign [class="Zathura"] $workspace4
+assign [class="VirtualBox"] $workspace6
 
 bindsym $mod+F11 exec --no-startup-id scrot ~/pictures/screens/screen-%Y-%m-%d-%H:%M:%S.png
 
