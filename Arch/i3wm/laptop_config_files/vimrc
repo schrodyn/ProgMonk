@@ -48,7 +48,11 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 nmap <silent> NT :NERDTreeToggle<CR>
-:autocmd FileType nerdtree nmap <buffer> <CR> go
+autocmd FileType nerdtree nmap <buffer> P u
+
+nnoremap <silent> <C-H> :wincmd h<CR>
+nnoremap <silent> <C-L> :wincmd l<CR> 
+
 
 " ----- xolox/vim-easytags settings -----
 " Where to look for tags files
@@ -65,9 +69,6 @@ let g:easytags_suppress_ctags_warning = 1
 " ----- majutsushi/tagbar settings -----
 " Open/close tagbar
 nmap <silent> <C-\> :TagbarToggle<CR>
-
-nnoremap <silent> <C-H> :wincmd h<CR>
-nnoremap <silent> <C-L> :wincmd l<CR> 
 
 let g:tagbar_autofocus = 1
 " ----- majutsushi/tagbar settings end -----
