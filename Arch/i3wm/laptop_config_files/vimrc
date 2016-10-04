@@ -43,6 +43,9 @@ Plugin 'ctrlpvim/ctrlp.vim'
 "Vim plugin that use clang for completing C/C++ code.
 Plugin 'Rip-Rip/clang_complete'
 
+"Python autocompletion with VIM
+Plugin 'davidhalter/jedi-vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -87,7 +90,7 @@ let g:clang_use_library = 1
 let g:clang_complete_auto=0
 
 " change mapping so that control space does user supplied completion
-inoremap <expr> <C-n> "\<C-x>\<C-u>"
+inoremap <expr> <C-v> "\<C-x>\<C-u>"
 
 " Complete options (disable preview scratch window, longest removed to aways show menu)
 set completeopt=menu,menuone
