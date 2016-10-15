@@ -186,6 +186,7 @@ client.urgent             #2f343a #900000 #ffffff #900000
 
 assign [class="chromium"] $workspace2
 assign [class="Zathura"] $workspace4
+assign [class="MuPDF"] $workspace4
 assign [class="mpv"] $workspace5
 assign [class="VirtualBox"] $workspace6
 
