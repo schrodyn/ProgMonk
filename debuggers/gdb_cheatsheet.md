@@ -268,4 +268,13 @@ Also to always display some info you can use `display` command:
 Now every time the program stops the value of the register `eax` 
 should be printed on the screen.
 
+## TUI mode
+
+```
+gdb ./binary -q -tui
+(gdb) layout asm
+(gdb) layout regs
+```
+
+
 
