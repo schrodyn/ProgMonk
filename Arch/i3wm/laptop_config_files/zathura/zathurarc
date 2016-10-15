@@ -1,6 +1,8 @@
-set recolor true
+set recolor false
 set recolor-darkcolor "#fff"
 set recolor-lightcolor "#000"
+
+set index-bg "#000"
 
 set font "inconsolata normal 9"
 
@@ -9,9 +11,11 @@ map <C-o> zoom out
 
 map <C-d> zoom best-fit
 
-set scroll-step 80
+set scroll-step 150
 
 map <C-y> scroll half-down
 map <C-u> scroll half-up
+
+map <Space> toggle_statusbar
 
 set selection-clipboard clipboard
