@@ -111,8 +111,8 @@ bindsym $mod+Shift+3 move container to workspace $workspace3
 bindsym $mod+Shift+4 move container to workspace $workspace4
 bindsym $mod+Shift+5 move container to workspace $workspace5
 bindsym $mod+Shift+6 move container to workspace $workspace6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
@@ -184,12 +184,15 @@ client.focused_inactive   #5f676a #5f676a #cecece #5f676a
 client.unfocused          #222222 #222222 #888888 #222222
 client.urgent             #2f343a #900000 #ffffff #900000
 
-assign [class="chromium"] $workspace2
+assign [class="Chromium"] $workspace2
 assign [class="Zathura"] $workspace4
 assign [class="MuPDF"] $workspace4
 assign [class="mpv"] $workspace5
 assign [class="VirtualBox"] $workspace6
+assign [class="Firefox"] $workspace7
+assign [class="Atom"] $workspace8
 assign [class="Wireshark"] $workspace9
+assign [class="burp-StartBurp"] $workspace9
 
 bindsym $mod+F11 exec --no-startup-id scrot ~/pictures/screens/screen-%Y-%m-%d-%H:%M:%S.png
 
