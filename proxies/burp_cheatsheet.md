@@ -163,5 +163,123 @@ To import BurpSuite certificate open
 Settings -> Advanced -> Manage certificates -> Authorities -> Import
 ```
 
+## Target
+
+The **Target** tab has two subtabs for **Scope** and **Site map**.
+The **Scope** subtab allows us to set the scope for our testing
+and the **Site map** subtab shows us all requested and unrequested
+items for the website. The **Site map** subtab automatically collects 
+data from other sources, including Proxy, Spider, active and passive Scanner, etc.
+
+Just as with any data aggregation tool, more power comes when we 
+select data on various parameters, and Burp's **Display** filters do 
+a great job here.
+
+While mapping the application, it might make sense to uncheck 
+**Hide not-found** items. This might point to some resource that was 
+present earlier and give hints about the application and its flaws.
+
+## Proxy
+
+Inside Burp, type in `Ctrl + Shift + P` to easily switch to the 
+**Proxy** tab and `Ctrl + F` to forward the waiting request.
+
+To see all the keyboard shortcuts or edit them, go to 
+
+```
+Options -> Misc -> HotKeys
+```
+
+## Actions on the intercepted requests
+
+Once we have an intercepted request, we can send it to Repeater 
+(`Ctrl + R`) to manipulate it one by one; we can send it to Intruder 
+(`Ctrl + I`) to simulate an automated attack; we can send it for more 
+spidering, an active scan or even to a Sequencer, Decoder, 
+or Comparer.
+
+Repeater allows a tester to send requests and get instant feedback 
+with the responses.
+
+Intruder is like an iterator. We give it a range of values and 
+unleash it on the application. In most cases, the output of basic 
+test cases from Repeater will point you either to use Intruder or go 
+with the active scanner.
+
+Logical issues and input-based issues are better tested and verified 
+with Repeater once and then exploited using Intruder.
+
+## Intercept only one domain and subdomains
+
+Burp’s scope rules (`Target -> Scope`) use regular expressions in the 
+host field, so you 
+can create a rule that matches something like:
+
+```
+.*\.google\.com$
+```
+
+and this should match all subdomains of `google.com`
+
+After that you should go to 
+
+```
+Proxy -> Options -> Intercept Client Requests
+```
+
+and mark or create field **And | URL | Is in target scope**
+
+## Using the Proxy history tab
+
+Burp maintains all of Proxy history in the **HTTP history** subtab. 
+In a lot of security assessments, allowing the site map to fill up 
+and then going through the **HTTP history** table gives us a very 
+good idea about the functionality, architecture,
+and common patterns that might indicate vulnerabilities and more.
+
+## Intruder
+
+Burp Intruder is meant for exploitation and automating attacks.
+Intruder is a very good and efficient request sender and response 
+collector. 
+
+The best way to get started is to find a request that has parameters 
+that can be fuzzed. A login form is a good example where we can check 
+for weak credentials by simulating a dictionary attack using the 
+Intruder tool.
+
+First, we choose an interesting-looking request that can and should 
+be automated. 
+
+Then we give a baseline request to Intruder (`Send to Intruder` or 
+`Ctrl-I`), mark the positions where the payloads or attack test cases 
+should be placed, and start the attack. 
+
+## Emulate User Agent
+
+Another useful trick is to match and replace the default user agent 
+of the browser to emulate another browser or a mobile device:
+
+Go to 
+
+```
+Proxy -> Options -> Match and Replace
+```
+
+## Grep - Match and Grep - Extract
+
+We can use **Grep - Match** to quickly identify requests/responses 
+that we get in the **Intruder** results to filter these results based 
+on certain conditions.
+
+We can add more keywords, set the match type to be simple strings or 
+regular expression patterns, and load more from our list of keywords. 
+It is great for analysis of output from the **Intruder** tool!
+
+**Grep - Extract** allows us to extract data using the response 
+extraction rules for the requests made in **Intruder**.
+
+
+
 
 
