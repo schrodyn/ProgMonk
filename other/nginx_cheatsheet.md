@@ -46,6 +46,43 @@ http {
 }
 ```
 
+some performance modifications:
+
+```
+user nginx nginx;
+
+worker_processes 4;
+worker_cpu_affinity 1000 0100 0010 0001;
+
+events {
+	worker_connections 1024;
+	use epoll;
+}
+
+
+http {
+
+	sendfile on;
+	gzip on;
+	gzip_comp_level  2;
+
+	server_tokens off;
+
+    server {
+		listen	172.16.2.163:9090;
+
+		access_log /home/shared/lol.log;
+		error_log /home/shared/error.log;
+
+		location /psoft {
+			autoindex	on;
+    		root /home/shared;
+		}
+
+    }
+}
+```
+
 **user nginx nginx;** start worker processes as user **nginx**
 and group **nginx**
 
