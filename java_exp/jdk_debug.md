@@ -174,6 +174,8 @@ While compiling I've encountered errors with the following packages:
 rename `jdk8_src/sun/tools/jconsole/Version.java.template` into
 `jdk8_src/sun/tools/jconsole/Version.java`
 
+Another solution just remove all of them.
+
 Copy `tools.jar` from **JDK_HOME/lib** folder into your working 
 directory
 
