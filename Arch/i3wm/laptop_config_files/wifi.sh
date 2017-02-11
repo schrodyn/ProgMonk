@@ -2,7 +2,7 @@
 
 device="$1"
 
-ipaddr=$(ip addr show $device | grep '^.*inet.*brd' | awk '{print $2}' | sed 's/\/.*$//')
+ipaddr=$(ip addr show $device | grep '^.*inet.*global' | awk '{print $2}' | sed 's/\/.*$//')
 
 #ssid=$(iw dev $device link | grep SSID | sed 's/^.*SSID: //')
 
