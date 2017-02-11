@@ -75,7 +75,7 @@ esac
 
 sudo ip link set dev $DEV up
 
-sudo nohup wpa_supplicant -i $DEV -D nl80211 -c $WPA_CFG > neton.log 2>&1 &
+sudo sh -c "nohup wpa_supplicant -i $DEV -D nl80211 -c $WPA_CFG > /etc/neton/neton.log 2>&1 &"
 
 if [ $IP == "static" ]; then
 	sudo ip addr add $ADDR dev $DEV 
